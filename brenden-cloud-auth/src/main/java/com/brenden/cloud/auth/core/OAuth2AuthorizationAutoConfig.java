@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -34,6 +35,7 @@ import javax.sql.DataSource;
 @AutoConfiguration(before = { JdbcTemplateAutoConfiguration.class })
 @EnableWebSecurity
 @ConditionalOnClass({ DataSource.class })
+@EnableConfigurationProperties({JdbcTemplate.class, RegisteredClientRepository.class})
 public class OAuth2AuthorizationAutoConfig {
 
     @Bean
