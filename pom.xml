@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.0.5</version>
+    </parent>
+    <groupId>com.brenden.cloud</groupId>
+    <artifactId>brenden-cloud-master</artifactId>
+    <version>1.0</version>
+    <packaging>pom</packaging>
+
+    <name>brenden-cloud</name>
+    <description>brenden project for Spring Cloud</description>
+
+    <developers>
+        <developer>
+            <name>brenden</name>
+            <email>brenden.luo@gmail.com</email>
+        </developer>
+    </developers>
+
+    <modules>
+        <module>brenden-cloud-auth</module>
+        <module>brenden-cloud-common</module>
+    </modules>
+
+    <properties>
+        <brenden.cloud.version>1.0</brenden.cloud.version>
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <spring-boot.version>3.0.5</spring-boot.version>
+        <spring-cloud.version>2022.0.2</spring-cloud.version>
+        <spring-cloud-alibaba.version>2022.0.0.0-RC1</spring-cloud-alibaba.version>
+        <spring.cloud.alibaba>2.2.5.RELEASE</spring.cloud.alibaba>
+        <hutool.version>5.8.12</hutool.version>
+        <mybatis-plus.version>3.5.2</mybatis-plus.version>
+        <redisson.version>3.21.3</redisson.version>
+        <java.version>17</java.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- spring -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- nacos alibaba cloud -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+
+            <!--    自定义组件-auth        -->
+            <dependency>
+                <groupId>com.brenden.cloud.auth</groupId>
+                <artifactId>brenden-cloud-auth</artifactId>
+                <version>${brenden.cloud.version}</version>
+            </dependency>
+
+            <!--    自定义组件-common        -->
+            <dependency>
+                <groupId>com.brenden.cloud.common</groupId>
+                <artifactId>brenden-cloud-common-mybatis-plus</artifactId>
+                <version>${brenden.cloud.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.brenden.cloud.common</groupId>
+                <artifactId>brenden-cloud-common-core</artifactId>
+                <version>${brenden.cloud.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
+            <scope>compile</scope>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>cn.hutool</groupId>-->
+<!--            <artifactId>hutool-all</artifactId>-->
+<!--            <version>${hutool.version}</version>-->
+<!--        </dependency>-->
+    </dependencies>
+</project>
