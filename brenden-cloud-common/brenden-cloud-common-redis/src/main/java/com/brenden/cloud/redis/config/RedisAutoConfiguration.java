@@ -1,7 +1,7 @@
 package com.brenden.cloud.redis.config;
 
 import com.brenden.cloud.redis.utils.RedisUtil;
-import com.brenden.cloud.redis.utils.RedissonUtils;
+import com.brenden.cloud.redis.utils.RedissonUtil;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -56,13 +57,15 @@ public class RedisAutoConfiguration {
     }
 
     @Bean
+    @Lazy
     public RedisUtil redisUtil(RedisTemplate<String, Object> redisTemplate) {
         return new RedisUtil(redisTemplate);
     }
 
     @Bean
-    public RedissonUtils redissonUtils(RedissonClient redissonClient) {
-        return new RedissonUtils(redissonClient);
+    @Lazy
+    public RedissonUtil redissonUtils(RedissonClient redissonClient) {
+        return new RedissonUtil(redissonClient);
     }
 
 }

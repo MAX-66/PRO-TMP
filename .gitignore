@@ -35,7 +35,6 @@ gen
 .buildpath
 .project
 .settings/
-META-INF/
 .externalToolBuilders/
 .classpath
 .prefs

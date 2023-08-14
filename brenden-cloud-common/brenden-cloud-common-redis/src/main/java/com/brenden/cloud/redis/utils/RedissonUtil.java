@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @since 2023/8/13
  */
 @RequiredArgsConstructor
-public class RedissonUtils {
+public class RedissonUtil {
 
     /** 1小时过期 */
     public static final long HOUR_ONE = 60 * 60;

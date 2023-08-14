@@ -1,6 +1,9 @@
 package com.brenden.cloud.controller;
 
+import com.brenden.cloud.redis.utils.RedisUtil;
+import com.brenden.cloud.redis.utils.RedissonUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,16 +20,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TestController {
 
-  /*  @Autowired(required = false)
-    private  RedisUtil redisUtil;
+    @Autowired(required = false)
+    private RedisUtil redisUtil;
 
     @RequestMapping("/set")
     public void set() {
-        redisUtil.set("test", "test");
+        redisUtil.hSet("test:controller:userId", "12306", "12306", RedissonUtil.HOUR_TWO);
     }
 
     @RequestMapping("/get")
     public Object get() {
-       return redisUtil.get("test");
-    }*/
+       return redisUtil.hGet("test:controller:userId","12306");
+    }
 }
