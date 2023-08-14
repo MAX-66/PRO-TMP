@@ -25,5 +25,9 @@
             <groupId>com.brenden.cloud.provide</groupId>
             <artifactId>brenden-cloud-provide-auth-persistence</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.brenden.cloud.common</groupId>
+            <artifactId>brenden-cloud-common-redis</artifactId>
+        </dependency>
     </dependencies>
 </project>

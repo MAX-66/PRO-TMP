@@ -1,4 +1,4 @@
-package com.brenden.cloud.config;
+package com.brenden.cloud.redis.config;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnection;
 
 /**
  * <p>

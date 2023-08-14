@@ -1,0 +1,3 @@
+com.brenden.cloud.redis.config.RedisAutoConfiguration
+com.brenden.cloud.redis.config.RedissonConfiguration
+

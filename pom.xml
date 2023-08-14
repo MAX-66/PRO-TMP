@@ -100,6 +100,11 @@
                 <artifactId>brenden-cloud-common-core</artifactId>
                 <version>${brenden.cloud.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.brenden.cloud.common</groupId>
+                <artifactId>brenden-cloud-common-redis</artifactId>
+                <version>${brenden.cloud.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
