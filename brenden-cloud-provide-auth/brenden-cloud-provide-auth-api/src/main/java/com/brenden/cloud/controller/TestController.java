@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TestController {
 
-    @Autowired(required = false)
+    @Autowired
     private RedisUtil redisUtil;
 
     @RequestMapping("/set")
