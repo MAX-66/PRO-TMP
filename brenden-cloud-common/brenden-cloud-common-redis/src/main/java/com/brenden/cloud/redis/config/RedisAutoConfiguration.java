@@ -8,13 +8,12 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import org.redisson.api.RedissonClient;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -28,7 +27,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  * @author lxq
  * @since 2023/8/10
  */
-@AutoConfigureAfter
+@AutoConfiguration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnClass(LettuceConnectionFactory.class)
 @ComponentScan("com.brenden.cloud.redis")
@@ -57,13 +56,11 @@ public class RedisAutoConfiguration {
     }
 
     @Bean
-    @Lazy
     public RedisUtil redisUtil(RedisTemplate<String, Object> redisTemplate) {
         return new RedisUtil(redisTemplate);
     }
 
     @Bean
-    @Lazy
     public RedissonUtil redissonUtils(RedissonClient redissonClient) {
         return new RedissonUtil(redissonClient);
     }
