@@ -9,9 +9,7 @@
         <version>1.0</version>
     </parent>
 
-    <groupId>com.brenden.cloud.auth</groupId>
     <artifactId>brenden-cloud-auth</artifactId>
-    <packaging>pom</packaging>
 
     <dependencies>
         <dependency>
@@ -36,16 +34,6 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-oauth2-authorization-server</artifactId>
             <version>1.0.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.brenden.cloud.common</groupId>
-            <artifactId>brenden-cloud-common-mybatis-plus</artifactId>
         </dependency>
     </dependencies>
 </project>
