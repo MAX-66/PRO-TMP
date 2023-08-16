@@ -7,6 +7,7 @@ server:
 logging:
   config: classpath:logback-spring.xml
   path: ../logs/
+
 #  后续需要迁移至配置中心
 spring:
   datasource:
@@ -29,3 +30,6 @@ spring:
       connect-timeout: 30000
       timeout: 30000
       client-type: lettuce
+knife4j:
+  enable: true
+  cors: true

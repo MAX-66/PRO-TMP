@@ -27,6 +27,10 @@
             <artifactId>brenden-cloud-provide-auth-service</artifactId>
             <version>${brenden.cloud.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.brenden.cloud.common</groupId>
+            <artifactId>brenden-cloud-common-knife4j</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

@@ -10,3 +10,5 @@ spring:
       idle-timeout: 600000
       max-lifetime: 1800000
       connection-test-query: SELECT 1
+knife4j:
+  enable: true
