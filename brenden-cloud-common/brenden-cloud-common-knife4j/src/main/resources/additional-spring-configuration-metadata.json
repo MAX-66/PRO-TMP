@@ -1,0 +1,54 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "springdoc.info.title",
+      "type": "java.lang.String",
+      "description": "文档标题",
+      "sourceType": "com.brenden.cloud.knife4j.config.CustomizedSpringDocProperties",
+      "defaultValue": ""
+    },
+    {
+      "name": "springdoc.info.verison",
+      "type": "java.lang.String",
+      "description": "文档版本",
+      "sourceType": "com.brenden.cloud.knife4j.config.CustomizedSpringDocProperties",
+      "defaultValue": ""
+    },
+    {
+      "name": "springdoc.info.url",
+      "type": "java.lang.String",
+      "description": "文档地址",
+      "sourceType": "com.brenden.cloud.knife4j.config.CustomizedSpringDocProperties",
+      "defaultValue": ""
+    },
+    {
+      "name": "springdoc.info.description",
+      "type": "java.lang.String",
+      "description": "文档简介",
+      "sourceType": "com.brenden.cloud.knife4j.config.CustomizedSpringDocProperties",
+      "defaultValue": ""
+    },
+    {
+      "name": "springdoc.info.contactName",
+      "type": "java.lang.String",
+      "description": "文档作者",
+      "sourceType": "com.brenden.cloud.knife4j.config.CustomizedSpringDocProperties",
+      "defaultValue": ""
+    },
+    {
+      "name": "springdoc.info.contactEmail",
+      "type": "java.lang.String",
+      "description": "文档作者邮箱",
+      "sourceType": "com.brenden.cloud.knife4j.config.CustomizedSpringDocProperties",
+      "defaultValue": ""
+    },
+    {
+      "name": "springdoc.info.contactUrl",
+      "type": "java.lang.String",
+      "description": "文档作者URL",
+      "sourceType": "com.brenden.cloud.knife4j.config.CustomizedSpringDocProperties",
+      "defaultValue": ""
+    }
+  ]
+}

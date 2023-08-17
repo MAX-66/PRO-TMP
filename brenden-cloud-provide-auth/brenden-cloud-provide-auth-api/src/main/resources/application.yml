@@ -30,6 +30,31 @@ spring:
       connect-timeout: 30000
       timeout: 30000
       client-type: lettuce
+
+# springdoc-openapi项目配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'api-auth'
+      paths-to-match: '/**'
+      packages-to-scan: com.brenden.cloud
+  info:
+    title: 认证模块
+    description: 用户认证与授权
+    contact-name: brenden.luo
+    contact-email: brenden.luo@gmail.com
+    version: v1.0.0
+# knife4j的增强配置，不需要增强可以不配
 knife4j:
   enable: true
-  cors: true
+  setting:
+    language: zh_cn
+  documents:
+    - group: 认证模块
+      name: auth
+

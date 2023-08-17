@@ -1,13 +1,15 @@
 package com.brenden.cloud.knife4j.config;
 
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * <p>
@@ -17,32 +19,24 @@ import springfox.documentation.spring.web.plugins.Docket;
  * @author lxq
  * @since 2023/8/16
  */
-@Configuration
+@AutoConfiguration
+@EnableConfigurationProperties(CustomizedSpringDocProperties.class)
+@ComponentScan("com.brenden.cloud.knife4j")
 public class Knife4jAutoConfig {
 
-
-    @ConditionalOnMissingBean(Docket.class)
+    @ConditionalOnMissingBean(OpenAPI.class)
+    @ConditionalOnProperty(prefix = "springdoc.info", value = "", matchIfMissing = true)
     @Bean
-    Docket defaultApi2(CustomizedKnife4jProperties properties) {
-        Docket docket=new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(new ApiInfoBuilder()
-                        //.title("swagger-bootstrap-ui-demo RESTful APIs")
-                        .description(properties.getDescription())
-                        .termsOfServiceUrl(properties.getUrl())
-                        .contact(properties.getContact())
+    public OpenAPI customOpenAPI(CustomizedSpringDocProperties properties) {
+        return new OpenAPI()
+                .info(new Info()
+                        .title(properties.getTitle())
                         .version(properties.getVersion())
-                        .license("Apache License 2.0")
-                        .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0")
-                        .build())
-                //分组名称
-                .groupName("3.X版本")
-                .select()
-                //这里指定Controller扫描包路径
-                .apis(RequestHandlerSelectors.basePackage(properties.getApiPackage()))
-//                .apis(properties.getApiPackage())
-                .paths(PathSelectors.any())
-                .build();
-        return docket;
+                        .contact(new Contact().name(properties.getContactName())
+                                .url(properties.getContactUrl()).email(properties.getContactEmail()))
+                        .description(properties.getDescription())
+                        .license(new License().name("Apache License 2.0")
+                                .url("http://www.apache.org/licenses/LICENSE-2.0")));
     }
 
 }

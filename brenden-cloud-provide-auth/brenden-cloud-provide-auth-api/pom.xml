@@ -25,7 +25,6 @@
         <dependency>
             <groupId>com.brenden.cloud.provide</groupId>
             <artifactId>brenden-cloud-provide-auth-service</artifactId>
-            <version>${brenden.cloud.version}</version>
         </dependency>
         <dependency>
             <groupId>com.brenden.cloud.common</groupId>
