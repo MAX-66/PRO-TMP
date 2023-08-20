@@ -58,3 +58,18 @@ knife4j:
     - group: 认证模块
       name: auth
 
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+  typeAliasesPackage: com.brenden.cloud.**.persistence.domain
+  global-config:
+    db-config:
+      #驼峰下划线转换
+      column-underline: true
+      #逻辑删除配置
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      db-type: mysql
+    refresh: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false

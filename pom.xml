@@ -38,7 +38,7 @@
         <spring-cloud-alibaba.version>2022.0.0.0</spring-cloud-alibaba.version>
         <spring.cloud.alibaba>2.2.5.RELEASE</spring.cloud.alibaba>
         <hutool.version>5.8.12</hutool.version>
-        <mybatis-plus.version>3.5.2</mybatis-plus.version>
+        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
         <redisson.version>3.21.3</redisson.version>
         <knife4j-version>4.3.0</knife4j-version>
         <java.version>17</java.version>
