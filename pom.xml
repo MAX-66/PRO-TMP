@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.5</version>
+        <version>3.1.3</version>
     </parent>
     <groupId>com.brenden.cloud</groupId>
     <artifactId>brenden-cloud-master</artifactId>
@@ -33,8 +33,8 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-boot.version>3.0.5</spring-boot.version>
-        <spring-cloud.version>2022.0.0</spring-cloud.version>
+        <spring-boot.version>3.1.3</spring-boot.version>
+        <spring-cloud.version>2022.0.4</spring-cloud.version>
         <spring-cloud-alibaba.version>2022.0.0.0</spring-cloud-alibaba.version>
         <spring.cloud.alibaba>2.2.5.RELEASE</spring.cloud.alibaba>
         <hutool.version>5.8.12</hutool.version>

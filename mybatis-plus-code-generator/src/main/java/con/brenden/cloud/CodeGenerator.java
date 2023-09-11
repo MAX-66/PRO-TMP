@@ -18,10 +18,10 @@ public class CodeGenerator extends BaseGenerator{
 
 
     public static void main(String[] args) {
-        final ResourceBundle rb = ResourceBundle.getBundle("pg");
+        final ResourceBundle rb = ResourceBundle.getBundle("mybatis-plus");
         DataSourceConfig dsc = new DataSourceConfig
                 .Builder(rb.getString("datasource.url"), rb.getString("datasource.userName"), rb.getString("datasource.password"))
-                .schema(rb.getString("datasource.schemaname"))
+//                .schema(rb.getString("datasource.schemaname"))
                 .build();
 
         AutoGenerator generator = new AutoGenerator(dsc);

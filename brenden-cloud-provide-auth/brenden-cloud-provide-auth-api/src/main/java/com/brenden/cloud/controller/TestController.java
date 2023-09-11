@@ -2,11 +2,13 @@ package com.brenden.cloud.controller;
 
 import com.brenden.cloud.redis.utils.RedisUtil;
 import com.brenden.cloud.redis.utils.RedissonUtil;
+import com.brenden.cloud.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,8 +28,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @Autowired
-
     private RedisUtil redisUtil;
+
+    @Autowired
+    private UserService userService;
 
     @Operation(summary = "写入redis")
     @PostMapping("/set")
@@ -40,4 +44,11 @@ public class TestController {
     public Object get() {
        return redisUtil.hGet("test:controller:userId","12306");
     }
+
+    @Operation(summary = "获取用户")
+    @GetMapping("/getUser/{id}")
+    public Object getUser(@PathVariable("id") Integer id) {
+        return null;
+    }
+
 }
