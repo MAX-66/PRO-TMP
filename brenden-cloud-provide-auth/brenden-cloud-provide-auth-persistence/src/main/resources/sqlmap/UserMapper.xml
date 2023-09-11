@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brenden.cloud.sys.persistence.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.brenden.cloud.sys.persistence.domain.UserDO">
+        <result column="id" property="id" />
+        <result column="is_delete" property="isDelete" />
+        <result column="create_by" property="createBy" />
+        <result column="update_by" property="updateBy" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="gmt_modified" property="gmtModified" />
+        <result column="version" property="version" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="realName" property="realName" />
+        <result column="email" property="email" />
+        <result column="mobile" property="mobile" />
+        <result column="sex" property="sex" />
+        <result column="status" property="status" />
+        <result column="expires_date" property="expiresDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        is_delete,
+        create_by,
+        update_by,
+        gmt_create,
+        gmt_modified,
+        version,
+        username, password, realName, email, mobile, sex, status, expires_date
+    </sql>
+
+</mapper>
