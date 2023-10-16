@@ -1,3 +1,4 @@
+/*
 package com.brenden.cloud.user.impl;
 
 import com.brenden.cloud.auth.user.SecurityUserDetails;
@@ -20,6 +21,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+*/
 /**
  * <p>
  *
@@ -27,7 +29,8 @@ import java.util.stream.Collectors;
  *
  * @author lxq
  * @since 2023/9/10
- */
+ *//*
+
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
@@ -58,3 +61,4 @@ public class UserServiceImpl implements UserService {
         return new SecurityUserDetails(userDO.getUsername(), userDO.getPassword(), userDO.getStatus(), roleNameList);
     }
 }
+*/

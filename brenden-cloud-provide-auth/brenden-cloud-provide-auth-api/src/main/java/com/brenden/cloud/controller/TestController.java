@@ -2,7 +2,6 @@ package com.brenden.cloud.controller;
 
 import com.brenden.cloud.redis.utils.RedisUtil;
 import com.brenden.cloud.redis.utils.RedissonUtil;
-import com.brenden.cloud.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +29,6 @@ public class TestController {
     @Autowired
     private RedisUtil redisUtil;
 
-    @Autowired
-    private UserService userService;
 
     @Operation(summary = "写入redis")
     @PostMapping("/set")
