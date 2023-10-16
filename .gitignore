@@ -47,7 +47,7 @@ gen
 .launch
 .checkstyle
 .externalToolBuilders/
-/target/
+/target/*
 /.settings/
 /.classpath
 /.project
