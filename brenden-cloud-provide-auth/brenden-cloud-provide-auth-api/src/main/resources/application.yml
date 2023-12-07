@@ -2,8 +2,9 @@ server:
   port: ${SERVER_PORT:8010}
   tomcat:
     uri-encoding: UTF-8
-    max-threads: 800
-    min-spare-threads: 100
+    threads:
+      max: 800
+      min-spare: 100
 
 
 # springdoc-openapi项目配置
