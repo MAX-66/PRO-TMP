@@ -1,0 +1,17 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: public
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: public
+        file-extension: yaml
+        shared-configs:
+          - data-id: brenden-shared-database-config.yaml
+            refresh: true
+
+logging:
+  config: classpath:logback-spring.xml
+  path: ../logs/

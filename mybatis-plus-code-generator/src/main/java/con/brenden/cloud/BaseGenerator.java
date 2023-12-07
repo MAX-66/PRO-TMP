@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.TemplateConfig;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-import com.brenden.cloud.entity.BaseDO;
+import com.brenden.cloud.entity.BaseEntity;
 
 import java.util.Collections;
 import java.util.Map;
@@ -29,14 +29,15 @@ public class BaseGenerator {
         StrategyConfig.Builder strategy = new StrategyConfig.Builder();
         strategy.addInclude(rb.getString("tables.name").split(","))
                 .addTablePrefix(rb.getString("tables.prefix"));
-        strategy.entityBuilder().superClass(BaseDO.class)
+        strategy.entityBuilder().superClass(BaseEntity.class)
                 .columnNaming(NamingStrategy.underline_to_camel)
                 .enableLombok()
                 .enableTableFieldAnnotation()
                 .formatFileName("%sDO")
                 .logicDeleteColumnName("is_delete")
                 .versionColumnName("version");
-        strategy.serviceBuilder().formatServiceFileName("%sManager").formatServiceImplFileName("%sManagerImpl");
+//        strategy.serviceBuilder().formatServiceFileName("%sManager").formatServiceImplFileName("%sManagerImpl");
+        strategy.serviceBuilder().formatServiceFileName("%sService").formatServiceImplFileName("%sServiceImpl");
         strategy.controllerBuilder().formatFileName("%sController").enableRestStyle();
         strategy.mapperBuilder().superClass(BaseMapper.class)
                 .formatMapperFileName("%sMapper")

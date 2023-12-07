@@ -1,0 +1,6 @@
+server:
+  port: ${SERVER_PORT:8880}
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 800
+    min-spare-threads: 100
