@@ -42,6 +42,16 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.brenden.cloud.common</groupId>
+            <artifactId>brenden-cloud-common-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.brenden.cloud.common</groupId>
+            <artifactId>brenden-cloud-common-core</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
