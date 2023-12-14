@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.TemplateConfig;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-import com.brenden.cloud.entity.BaseEntity;
+import com.brenden.cloud.entity.BaseDO;
 
 import java.util.Collections;
 import java.util.Map;
@@ -29,7 +29,8 @@ public class BaseGenerator {
         StrategyConfig.Builder strategy = new StrategyConfig.Builder();
         strategy.addInclude(rb.getString("tables.name").split(","))
                 .addTablePrefix(rb.getString("tables.prefix"));
-        strategy.entityBuilder().superClass(BaseEntity.class)
+        strategy.entityBuilder()
+                .superClass(BaseDO.class)
                 .columnNaming(NamingStrategy.underline_to_camel)
                 .enableLombok()
                 .enableTableFieldAnnotation()
