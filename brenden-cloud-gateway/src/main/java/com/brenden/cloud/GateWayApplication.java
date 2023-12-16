@@ -1,9 +1,8 @@
 package com.brenden.cloud;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 
 /**
  * <p>
@@ -15,12 +14,10 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
  */
 
 @SpringBootApplication
-@EnableConfigurationProperties
-@RequiredArgsConstructor
 public class GateWayApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(GateWayApplication.class, args);
+        new SpringApplicationBuilder(GateWayApplication.class).web(WebApplicationType.REACTIVE).run(args);
     }
 
 }

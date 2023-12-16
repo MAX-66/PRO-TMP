@@ -1,3 +1,4 @@
 com.brenden.cloud.redis.config.RedisAutoConfiguration
 com.brenden.cloud.redis.config.RedissonConfiguration
 com.brenden.cloud.redis.config.RedissonReactiveAutoConfiguration
+com.brenden.cloud.redis.config.ReactiveRedisAutoConfiguration
