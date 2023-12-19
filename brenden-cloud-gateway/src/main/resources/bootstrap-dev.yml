@@ -15,3 +15,5 @@ spring:
 logging:
   config: classpath:logback-spring.xml
   path: ../logs/
+  level:
+    com.alibaba.nacos: warn
