@@ -5,6 +5,8 @@ import com.alibaba.cloud.nacos.NacosConfigProperties;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.brenden.cloud.utils.JacksonUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.gateway.filter.FilterDefinition;
+import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
 import org.springframework.data.redis.core.ReactiveHashOperations;
@@ -15,10 +17,15 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.brenden.cloud.constant.NacosConstant.DATA_ID;
 import static com.brenden.cloud.constant.RedisKeyConstant.ROUTER_KEY;
 
 /**
@@ -91,7 +98,7 @@ public class CustomizeRouteDefinitionRepository implements RouteDefinitionReposi
         try {
             String group = nacosConfigProperties.getGroup();
             ConfigService configService = nacosConfigManager.getConfigService();
-            String config = configService.getConfig(ROUTER_KEY, group, 10000);
+            String config = configService.getConfig(DATA_ID, group, 10000);
             if (ObjectUtils.isEmpty(config)) {
                 return Collections.emptyList();
             }
@@ -100,6 +107,33 @@ public class CustomizeRouteDefinitionRepository implements RouteDefinitionReposi
             log.error("Failed to retrieve default route data -> {}", e.getMessage());
             throw new RuntimeException(e);
         }
-
     }
+
+    public static void main(String[] args) throws URISyntaxException {
+
+        List<RouteDefinition> routeDefinitions = new ArrayList<>();
+
+        RouteDefinition routeDefinition = new RouteDefinition();
+        routeDefinition.setId("auth");
+        routeDefinition.setUri(new URI("lb://brenden-cloud-provide-auth-api"));
+        routeDefinition.setOrder(0);
+        List<PredicateDefinition> predicates = new ArrayList<>();
+        PredicateDefinition pd = new PredicateDefinition("Path=/auth/**");
+        predicates.add(pd);
+        routeDefinition.setPredicates(predicates);
+
+        List<FilterDefinition> filters = new ArrayList<>();
+        FilterDefinition fd = new FilterDefinition("StripPrefix=1");
+
+        filters.add(fd);
+        routeDefinition.setFilters(filters);
+
+        Map<String,Object> metadata = new HashMap<>();
+        metadata.put("description", "认证授权相关接口");
+        routeDefinition.setMetadata(metadata);
+        routeDefinitions.add(routeDefinition);
+
+        System.out.println(JacksonUtil.toJson(routeDefinitions));
+    }
+
 }

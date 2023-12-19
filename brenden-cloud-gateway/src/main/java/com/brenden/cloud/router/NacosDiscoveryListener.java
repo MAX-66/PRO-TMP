@@ -7,29 +7,40 @@ import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
 import io.micrometer.common.lang.NonNullApi;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
+import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.data.redis.core.ReactiveHashOperations;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import static com.alibaba.nacos.client.config.common.ConfigConstants.DATA_ID;
+import static com.brenden.cloud.constant.NacosConstant.DATA_ID;
+import static com.brenden.cloud.constant.RedisKeyConstant.ROUTER_KEY;
 
 @Component
 @Slf4j
 @NonNullApi
-@RequiredArgsConstructor
 public class NacosDiscoveryListener implements ApplicationEventPublisherAware {
 
     private final NacosConfigManager nacosConfigManager;
 
     private final NacosConfigProperties nacosConfigProperties;
 
+    private final ReactiveHashOperations<String, String, RouteDefinition> reactiveHashOperations;
+
     private ApplicationEventPublisher applicationEventPublisher;
+
+
+    public NacosDiscoveryListener(ReactiveRedisTemplate<String, Object> reactiveRedisTemplate, NacosConfigManager nacosConfigManager) {
+        this.reactiveHashOperations = reactiveRedisTemplate.opsForHash();
+        this.nacosConfigManager = nacosConfigManager;
+        this.nacosConfigProperties = nacosConfigManager.getNacosConfigProperties();
+    }
 
     @PostConstruct
     public void init() throws NacosException {
@@ -44,6 +55,12 @@ public class NacosDiscoveryListener implements ApplicationEventPublisherAware {
             @Override
             public void receiveConfigInfo(String configInfo) {
                 log.info("[dataId]:[{}],[group:]:[{}]Configuration changed to:{}", DATA_ID, group, configInfo);
+                // 删除后会自动重新读取
+                reactiveHashOperations.delete(ROUTER_KEY)
+                        .subscribe(success -> log.info("save router success"), error -> {
+                            log.error("save router fail: cause:");
+                            log.error("", error);
+                        });
                 applicationEventPublisher.publishEvent(new RefreshRoutesEvent(this));
             }
         });

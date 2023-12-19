@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.autoconfigure.data.redis.RedisReactiveAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
+import org.springframework.data.redis.core.ReactiveHashOperations;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
@@ -50,4 +51,9 @@ public class ReactiveRedisAutoConfiguration {
         return new ReactiveStringRedisTemplate(reactiveRedisConnectionFactory);
     }
 
+    @Bean
+    @ConditionalOnBean(name = "reactiveRedisTemplate")
+    public ReactiveHashOperations<String, String, Object> reactiveHashOperations(ReactiveRedisTemplate<String, Object> reactiveRedisTemplate) {
+        return reactiveRedisTemplate.opsForHash();
+    }
 }
