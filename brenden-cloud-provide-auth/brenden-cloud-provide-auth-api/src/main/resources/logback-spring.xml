@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <springProperty scope="context" name="springAppName" source="spring.application.name"/>
-    <springProperty scope="context" name="LOG_PATH" source="logging.path"/>
+    <property name="LOG_PATH" value="../logs/"/>
     <!-- 自定义日志输出的格式 -->
     <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level: x:\(%X\) msg:%msg%n"/>
 
