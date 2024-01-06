@@ -28,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>com.brenden.cloud.common</groupId>
-            <artifactId>brenden-cloud-common-knife4j</artifactId>
+            <artifactId>brenden-cloud-common-doc</artifactId>
         </dependency>
 
         <dependency>

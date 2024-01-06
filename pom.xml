@@ -37,6 +37,7 @@
         <spring-cloud.version>2022.0.4</spring-cloud.version>
         <spring-cloud-alibaba.version>2022.0.0.0</spring-cloud-alibaba.version>
         <spring.cloud.alibaba>2.2.5.RELEASE</spring.cloud.alibaba>
+        <springdoc-openapi.version>2.3.0</springdoc-openapi.version>
         <hutool.version>5.8.12</hutool.version>
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
         <redisson.version>3.21.3</redisson.version>
@@ -83,11 +84,21 @@
                 <version>${redisson.version}</version>
             </dependency>
 
+            <!--API 文档-->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi</artifactId>
+                <version>${springdoc-openapi.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
-                <version>${knife4j-version}</version>
+                <artifactId>knife4j-openapi3-ui</artifactId>
+                <version>4.3.0</version>
             </dependency>
+
 
             <!--    自定义组件-auth        -->
             <dependency>
@@ -114,8 +125,8 @@
             </dependency>
             <dependency>
                 <groupId>com.brenden.cloud.common</groupId>
-                <artifactId>brenden-cloud-common-knife4j</artifactId>
-                <version>${brenden.cloud.version}</version>
+                <artifactId>brenden-cloud-common-doc</artifactId>
+                <version>1.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

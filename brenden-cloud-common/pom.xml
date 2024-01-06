@@ -16,6 +16,6 @@
         <module>brenden-cloud-common-core</module>
         <module>brenden-cloud-common-mybatis-plus</module>
         <module>brenden-cloud-common-redis</module>
-        <module>brenden-cloud-common-knife4j</module>
+        <module>brenden-cloud-common-doc</module>
     </modules>
 </project>

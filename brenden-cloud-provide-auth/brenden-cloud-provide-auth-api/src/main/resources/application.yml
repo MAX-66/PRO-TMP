@@ -9,10 +9,6 @@ server:
 
 # springdoc-openapi项目配置
 springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    tags-sorter: alpha
-    operations-sorter: alpha
   api-docs:
     path: /v3/api-docs
   group-configs:
@@ -25,14 +21,6 @@ springdoc:
     contact-name: brenden.luo
     contact-email: brenden.luo@gmail.com
     version: v1.0.0
-# knife4j的增强配置，不需要增强可以不配
-knife4j:
-  enable: true
-  setting:
-    language: zh_cn
-  documents:
-    - group: 认证模块
-      name: auth
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*Mapper.xml
