@@ -22,20 +22,14 @@ import java.util.stream.Collectors;
  * @since 2024/1/3
  */
 @Configuration
-@RequiredArgsConstructor
 public class SpringDocConfiguration {
 
     private final static String API_URI = "/v3/api-docs";
 
     private final static String API_NAME_PREFIX = "api-";
 
-
-    protected final SwaggerUiConfigProperties swaggerUiConfigProperties;
-
-    protected final RouteDefinitionLocator routeDefinitionLocator;
-
     @Bean
-    public List<GroupedOpenApi> apis() {
+    public List<GroupedOpenApi> apis(SwaggerUiConfigProperties swaggerUiConfigProperties, RouteDefinitionLocator routeDefinitionLocator) {
         List<GroupedOpenApi> groups = new ArrayList<>();
         Set<AbstractSwaggerUiConfigProperties.SwaggerUrl> urls = routeDefinitionLocator.getRouteDefinitions().map(routeDefinition -> {
             groups.add(GroupedOpenApi.builder().pathsToMatch("/" + routeDefinition.getId() + "/**").group(routeDefinition.getId()).build());
