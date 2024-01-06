@@ -1,6 +1,5 @@
 package com.brenden.cloud.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.properties.AbstractSwaggerUiConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
