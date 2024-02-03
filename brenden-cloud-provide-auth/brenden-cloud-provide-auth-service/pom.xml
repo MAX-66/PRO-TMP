@@ -17,11 +17,10 @@
 
 
     <dependencies>
-
-<!--        <dependency>
+        <dependency>
             <groupId>com.brenden.cloud.auth</groupId>
-            <artifactId>brenden-cloud-auth</artifactId>
-        </dependency>-->
+            <artifactId>brenden-cloud-auth-server</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.brenden.cloud.provide</groupId>
             <artifactId>brenden-cloud-provide-auth-persistence</artifactId>

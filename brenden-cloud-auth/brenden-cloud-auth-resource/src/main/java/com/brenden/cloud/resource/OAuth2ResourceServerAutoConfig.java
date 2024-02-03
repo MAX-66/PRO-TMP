@@ -1,4 +1,4 @@
-package com.brenden.cloud.auth.core;
+package com.brenden.cloud.resource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class OAuth2ResourceServerAutoConfig {
 
     public static String[] STATIC_ANT_MATCHERS = new String[] { "/error","/swagger-ui.html", "/swagger-resources/**",
-            "/v2/**", "/webjars/**", "*.js", "*.css","/favicon.ico","/doc.html", "/v3/api-docs/*", "/auth/*", "/login"};
+            "/v3/**", "/webjars/**", "*.js", "*.css","/favicon.ico","/doc.html", "/v3/api-docs/*", "/auth/*", "/login"};
 
     /**
      *  认证 Spring Security 过滤器链
@@ -44,10 +44,11 @@ public class OAuth2ResourceServerAutoConfig {
 
         http.authorizeHttpRequests((authorize) -> authorize
                         .anyRequest().authenticated()
-                )
-                // Form login handles the redirect to the login page from the
-                // authorization server filter chain
-                .formLogin(Customizer.withDefaults());
+                ).oauth2ResourceServer(oauth2 -> oauth2
+                .jwt(Customizer.withDefaults())
+
+        );
+
         return http.build();
     }
 

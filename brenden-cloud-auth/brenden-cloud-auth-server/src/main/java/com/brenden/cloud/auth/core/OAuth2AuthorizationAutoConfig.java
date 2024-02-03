@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,6 +30,7 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
 import javax.sql.DataSource;
 import java.security.KeyPair;
@@ -95,7 +97,8 @@ public class OAuth2AuthorizationAutoConfig {
                 .authorizationService(authorizationService);
 
         http.exceptionHandling((exceptions) ->
-                exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")));
+                exceptions.defaultAuthenticationEntryPointFor(new LoginUrlAuthenticationEntryPoint("/login"),
+                        new MediaTypeRequestMatcher(MediaType.TEXT_HTML)));
         http.apply(oAuth2AuthorizationServerConfigurer);
         return http.build();
     }
@@ -105,7 +108,10 @@ public class OAuth2AuthorizationAutoConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-
+    public static void main(String[] args) {
+        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        System.out.println(passwordEncoder.encode("123456"));
+    }
     /**
      * 配置Spring授权服务器
      * @return

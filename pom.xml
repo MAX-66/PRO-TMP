@@ -103,7 +103,7 @@
             <!--    自定义组件-auth        -->
             <dependency>
                 <groupId>com.brenden.cloud.auth</groupId>
-                <artifactId>brenden-cloud-auth</artifactId>
+                <artifactId>brenden-cloud-auth-server</artifactId>
                 <version>${brenden.cloud.version}</version>
             </dependency>
 
