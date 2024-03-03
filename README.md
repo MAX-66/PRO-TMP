@@ -13,3 +13,4 @@
 - [ ] Elasticsearch
 - [ ] 多数据源设计
 - [ ] 接口日志记录
+- [ ] docker 部署
