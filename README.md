@@ -3,6 +3,9 @@
 
 ### todo list
 - [ ] Spring Authorization Server 集成
+
+    - 自定义密码模式
+    - token 存储到 redis
 - [ ] Seata 集成
 - [ ] Feign 集成
 - [ ] Gateway 网关请求拦截

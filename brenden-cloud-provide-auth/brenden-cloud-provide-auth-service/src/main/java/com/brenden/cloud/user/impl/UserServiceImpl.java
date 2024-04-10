@@ -8,8 +8,8 @@ import com.brenden.cloud.sys.persistence.manager.RoleManager;
 import com.brenden.cloud.sys.persistence.manager.UserManager;
 import com.brenden.cloud.sys.persistence.manager.UserRoleManager;
 import com.brenden.cloud.user.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -31,14 +31,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserManager userManager;
-    @Autowired
-    private UserRoleManager userRoleManager;
-    @Autowired
-    private RoleManager roleManager;
+    private final UserManager userManager;
+    private final UserRoleManager userRoleManager;
+    private final RoleManager roleManager;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -1,5 +1,9 @@
 package com.brenden.cloud.auth.core;
 
+import com.brenden.cloud.auth.authentication.PasswordAuthenticationConverter;
+import com.brenden.cloud.auth.authentication.PasswordAuthenticationProvider;
+import com.fasterxml.jackson.databind.Module;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -13,12 +17,20 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.lob.DefaultLobHandler;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.jackson2.SecurityJackson2Modules;
+import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
@@ -27,7 +39,14 @@ import org.springframework.security.oauth2.server.authorization.client.JdbcRegis
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.oauth2.server.authorization.token.DelegatingOAuth2TokenGenerator;
+import org.springframework.security.oauth2.server.authorization.token.JwtGenerator;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2AccessTokenGenerator;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2RefreshTokenGenerator;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
+import org.springframework.security.oauth2.server.authorization.web.authentication.DelegatingAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
@@ -37,6 +56,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -71,7 +91,24 @@ public class OAuth2AuthorizationAutoConfig {
     @ConditionalOnMissingBean(OAuth2AuthorizationService.class)
     public OAuth2AuthorizationService oauth2AuthorizationService(JdbcTemplate jdbcTemplate,
                                                                  RegisteredClientRepository registeredClientRepository) {
-        return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
+        JdbcOAuth2AuthorizationService authorizationService = new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
+        JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper authorizationRowMapper =
+                new JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper(
+                        registeredClientRepository(jdbcTemplate));
+        authorizationRowMapper.setLobHandler(new DefaultLobHandler());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ClassLoader classLoader = JdbcOAuth2AuthorizationService.class.getClassLoader();
+        List<Module> securityModules = SecurityJackson2Modules.getModules(classLoader);
+        objectMapper.registerModules(securityModules);
+        objectMapper.registerModule(new OAuth2AuthorizationServerJackson2Module());
+        //放入自定义的user类
+//        objectMapper.addMixIn(SecurityUserDetails.class, MyUserMixin.class);
+        authorizationRowMapper.setObjectMapper(objectMapper);
+
+        authorizationService.setAuthorizationRowMapper(authorizationRowMapper);
+
+        return authorizationService;
     }
 
     @Bean
@@ -88,30 +125,61 @@ public class OAuth2AuthorizationAutoConfig {
      */
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http, OAuth2AuthorizationService authorizationService)
+    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
+                                                                      OAuth2AuthorizationService authorizationService,
+                                                                      AuthenticationProvider passwordAuthenticationProvider)
             throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        OAuth2AuthorizationServerConfigurer oAuth2AuthorizationServerConfigurer =
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
                 http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .oidc(Customizer.withDefaults())
                 .authorizationService(authorizationService);
-
+        authorizationServerConfigurer.tokenEndpoint(tokenEndpoint ->
+                tokenEndpoint.accessTokenRequestConverter(new DelegatingAuthenticationConverter(List.of(new PasswordAuthenticationConverter())))
+                        .authenticationProvider(passwordAuthenticationProvider));
+        http.httpBasic(AbstractHttpConfigurer::disable);
         http.exceptionHandling((exceptions) ->
                 exceptions.defaultAuthenticationEntryPointFor(new LoginUrlAuthenticationEntryPoint("/login"),
                         new MediaTypeRequestMatcher(MediaType.TEXT_HTML)));
-        http.apply(oAuth2AuthorizationServerConfigurer);
+        http.apply(authorizationServerConfigurer);
+
         return http.build();
     }
+
+    @Bean
+    public AuthenticationProvider passwordAuthenticationProvider(PasswordEncoder passwordEncoder,
+                                                                 UserDetailsService userDetailsService,
+                                                                 OAuth2TokenGenerator<OAuth2Token> tokenGenerator,
+                                                                 OAuth2AuthorizationService authorizationService) {
+        return new PasswordAuthenticationProvider(passwordEncoder, userDetailsService, tokenGenerator, authorizationService);
+    }
+
+
+//    @Bean
+//    public AuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
+//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(passwordEncoder);
+//        provider.setUserDetailsService(userDetailsService);
+//        return provider;
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    public static void main(String[] args) {
-        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        System.out.println(passwordEncoder.encode("123456"));
+    @Bean
+    JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwkSource) {
+        return new NimbusJwtEncoder(jwkSource);
     }
+
+    @Bean
+    public OAuth2TokenGenerator<OAuth2Token> tokenGenerator(JwtEncoder jwtEncoder) {
+        JwtGenerator generator = new JwtGenerator(jwtEncoder);
+        return new DelegatingOAuth2TokenGenerator(generator, new OAuth2AccessTokenGenerator(),
+                new OAuth2RefreshTokenGenerator());
+    }
+
+
     /**
      * 配置Spring授权服务器
      * @return
