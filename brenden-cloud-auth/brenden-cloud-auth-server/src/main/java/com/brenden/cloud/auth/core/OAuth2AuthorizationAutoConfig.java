@@ -2,8 +2,6 @@ package com.brenden.cloud.auth.core;
 
 import com.brenden.cloud.auth.authentication.PasswordAuthenticationConverter;
 import com.brenden.cloud.auth.authentication.PasswordAuthenticationProvider;
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -17,7 +15,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.lob.DefaultLobHandler;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,7 +23,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.jackson2.SecurityJackson2Modules;
 import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -39,7 +35,6 @@ import org.springframework.security.oauth2.server.authorization.client.JdbcRegis
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
-import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.token.DelegatingOAuth2TokenGenerator;
 import org.springframework.security.oauth2.server.authorization.token.JwtGenerator;
@@ -91,24 +86,7 @@ public class OAuth2AuthorizationAutoConfig {
     @ConditionalOnMissingBean(OAuth2AuthorizationService.class)
     public OAuth2AuthorizationService oauth2AuthorizationService(JdbcTemplate jdbcTemplate,
                                                                  RegisteredClientRepository registeredClientRepository) {
-        JdbcOAuth2AuthorizationService authorizationService = new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
-        JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper authorizationRowMapper =
-                new JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper(
-                        registeredClientRepository(jdbcTemplate));
-        authorizationRowMapper.setLobHandler(new DefaultLobHandler());
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        ClassLoader classLoader = JdbcOAuth2AuthorizationService.class.getClassLoader();
-        List<Module> securityModules = SecurityJackson2Modules.getModules(classLoader);
-        objectMapper.registerModules(securityModules);
-        objectMapper.registerModule(new OAuth2AuthorizationServerJackson2Module());
-        //放入自定义的user类
-//        objectMapper.addMixIn(SecurityUserDetails.class, MyUserMixin.class);
-        authorizationRowMapper.setObjectMapper(objectMapper);
-
-        authorizationService.setAuthorizationRowMapper(authorizationRowMapper);
-
-        return authorizationService;
+        return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
     }
 
     @Bean
