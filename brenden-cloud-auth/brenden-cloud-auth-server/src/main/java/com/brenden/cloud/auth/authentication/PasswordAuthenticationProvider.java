@@ -30,6 +30,9 @@ import org.springframework.security.oauth2.server.authorization.token.DefaultOAu
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 
 import java.security.Principal;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -139,13 +142,21 @@ public class PasswordAuthenticationProvider extends DaoAuthenticationProvider {
                     generatedIdToken.getExpiresAt(), ((Jwt) generatedIdToken).getClaims());
             authorizationBuilder.token(idToken, (metadata) ->
                     metadata.put(OAuth2Authorization.Token.CLAIMS_METADATA_NAME, idToken.getClaims()));
+        } else {
+            idToken = null;
         }
 
         OAuth2Authorization authorization = authorizationBuilder.build();
 
         this.authorizationService.save(authorization);
-        return new OAuth2AccessTokenAuthenticationToken(registeredClient, authentication, accessToken, refreshToken);
-//        return super.createSuccessAuthentication(principal, authentication, user);
+
+        Map<String, Object> additionalParameters = Collections.emptyMap();
+        if (idToken != null) {
+            additionalParameters = new HashMap<>();
+            additionalParameters.put(OidcParameterNames.ID_TOKEN, idToken.getTokenValue());
+        }
+
+        return new OAuth2AccessTokenAuthenticationToken(registeredClient, authentication, accessToken, refreshToken, additionalParameters);
     }
 
 
