@@ -41,7 +41,10 @@ public class RedisAutoConfiguration {
         redisTemplate.setConnectionFactory(lettuceConnectionFactory);
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = getJsonRedisSerializer();
         redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
-        redisTemplate.setKeySerializer(RedisSerializer.string());
+        RedisSerializer<String> stringRedisSerializer = RedisSerializer.string();
+        redisTemplate.setKeySerializer(stringRedisSerializer);
+        redisTemplate.setStringSerializer(stringRedisSerializer);
+        redisTemplate.setHashKeySerializer(stringRedisSerializer);
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }
@@ -49,9 +52,14 @@ public class RedisAutoConfiguration {
     private Jackson2JsonRedisSerializer<Object> getJsonRedisSerializer() {
         // Json序列化配置
         ObjectMapper om = new ObjectMapper();
+        // 序列化所有字段
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL,
                 JsonTypeInfo.As.PROPERTY);
+        // 序列化对象中的对象
+        om.activateDefaultTyping(om.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL,
+                JsonTypeInfo.As.PROPERTY);
+
         return new Jackson2JsonRedisSerializer<>(om, Object.class);
     }
 

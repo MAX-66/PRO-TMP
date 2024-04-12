@@ -40,5 +40,9 @@
             <artifactId>tomcat-embed-core</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.brenden.cloud.common</groupId>
+            <artifactId>brenden-cloud-common-redis</artifactId>
+        </dependency>
     </dependencies>
 </project>
