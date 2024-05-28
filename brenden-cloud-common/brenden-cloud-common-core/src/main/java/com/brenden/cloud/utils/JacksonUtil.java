@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.SneakyThrows;
 
 import java.util.Iterator;
@@ -35,6 +36,7 @@ public class JacksonUtil {
 
         // 序列化: 排除值为 null 的对象
         MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        MAPPER.registerModule(new JavaTimeModule());
 
     }
 

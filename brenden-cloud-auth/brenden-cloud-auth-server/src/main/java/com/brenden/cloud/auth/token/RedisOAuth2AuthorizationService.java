@@ -17,6 +17,8 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -41,6 +43,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
     public void save(OAuth2Authorization authorization) {
         Assert.isTrue(Objects.nonNull(authorization), "authorization is null");
         RedisOAuth2Authorization redisOAuth2Authorization = convent(authorization);
+        redisOAuth2Authorization.setTtl(ChronoUnit.SECONDS.between(Instant.now(), redisOAuth2Authorization.getAccessTokenExpiresAt()));
         redisOAuth2AuthorizationRepository.deleteById(authorization.getId());
         redisOAuth2AuthorizationRepository.save(redisOAuth2Authorization);
     }

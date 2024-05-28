@@ -1,6 +1,10 @@
 package com.brenden.cloud.auth.model;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.TimeToLive;
+import org.springframework.data.redis.core.index.Indexed;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -14,11 +18,13 @@ import java.time.Instant;
  * @since 2024/4/11
  */
 @Data
+@RedisHash("oauth2:authorization")
 public class RedisOAuth2Authorization implements Serializable {
 
     /**
      * 主键
      */
+    @Id
     private String id;
 
     /**
@@ -74,6 +80,7 @@ public class RedisOAuth2Authorization implements Serializable {
     /**
      * access token的值
      */
+    @Indexed
     private String accessTokenValue;
 
     /**
@@ -185,4 +192,11 @@ public class RedisOAuth2Authorization implements Serializable {
      * 设备码元数据
      */
     private String deviceCodeMetadata;
+
+
+    /**
+     * 过期时间
+     */
+    @TimeToLive
+    private Long ttl;;
 }

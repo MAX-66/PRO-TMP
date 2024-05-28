@@ -2,6 +2,8 @@ package com.brenden.cloud.auth.core;
 
 import com.brenden.cloud.auth.authentication.PasswordAuthenticationConverter;
 import com.brenden.cloud.auth.authentication.PasswordAuthenticationProvider;
+import com.brenden.cloud.auth.repository.RedisOAuth2AuthorizationRepository;
+import com.brenden.cloud.auth.token.RedisOAuth2AuthorizationService;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -13,6 +15,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -28,7 +31,6 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
-import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
@@ -54,6 +56,8 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.List;
 import java.util.UUID;
 
+import static org.springframework.data.redis.core.RedisKeyValueAdapter.EnableKeyspaceEvents.OFF;
+
 /**
  * <p>
  *
@@ -64,6 +68,7 @@ import java.util.UUID;
  */
 @AutoConfiguration
 //@AutoConfiguration(before = { JdbcTemplateAutoConfiguration.class })
+@EnableRedisRepositories(enableKeyspaceEvents = OFF,  basePackages = { "com.brenden.cloud.auth.repository"})
 @ConditionalOnClass({ DataSource.class })
 @EnableWebSecurity
 public class OAuth2AuthorizationAutoConfig {
@@ -83,11 +88,11 @@ public class OAuth2AuthorizationAutoConfig {
 
 
     @Bean
-    @ConditionalOnMissingBean(OAuth2AuthorizationService.class)
-    public OAuth2AuthorizationService oauth2AuthorizationService(JdbcTemplate jdbcTemplate,
+    public OAuth2AuthorizationService oauth2AuthorizationService(RedisOAuth2AuthorizationRepository redisOAuth2AuthorizationRepository,
                                                                  RegisteredClientRepository registeredClientRepository) {
-        return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
+        return new RedisOAuth2AuthorizationService(redisOAuth2AuthorizationRepository, registeredClientRepository);
     }
+
 
     @Bean
     public OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
@@ -131,14 +136,6 @@ public class OAuth2AuthorizationAutoConfig {
                                                                  OAuth2AuthorizationService authorizationService) {
         return new PasswordAuthenticationProvider(passwordEncoder, userDetailsService, tokenGenerator, authorizationService);
     }
-
-
-//    @Bean
-//    public AuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
-//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(passwordEncoder);
-//        provider.setUserDetailsService(userDetailsService);
-//        return provider;
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
