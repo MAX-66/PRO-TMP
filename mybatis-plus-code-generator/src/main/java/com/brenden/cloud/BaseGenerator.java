@@ -1,4 +1,4 @@
-package con.brenden.cloud;
+package com.brenden.cloud;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;

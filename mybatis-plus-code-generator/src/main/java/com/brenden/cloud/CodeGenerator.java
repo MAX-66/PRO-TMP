@@ -1,4 +1,4 @@
-package con.brenden.cloud;
+package com.brenden.cloud;
 
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
