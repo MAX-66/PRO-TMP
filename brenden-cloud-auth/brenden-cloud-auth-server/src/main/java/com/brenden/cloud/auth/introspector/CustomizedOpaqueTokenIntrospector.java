@@ -39,7 +39,7 @@ public class CustomizedOpaqueTokenIntrospector implements OpaqueTokenIntrospecto
     public OAuth2AuthenticatedPrincipal introspect(String token) {
         OAuth2Authorization oAuth2Authorization = oAuth2AuthorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);
         if (Objects.isNull(oAuth2Authorization)) {
-            throw new OAuth2AuthenticationException("400");
+            throw new OAuth2AuthenticationException("401");
         }
         OAuth2Authorization.Token<OAuth2AccessToken> accessToken = oAuth2Authorization.getAccessToken();
         Instant expiresAt = accessToken.getToken().getExpiresAt();
@@ -50,6 +50,6 @@ public class CustomizedOpaqueTokenIntrospector implements OpaqueTokenIntrospecto
             UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) obj;
             return (SecurityUserDetails) Objects.requireNonNull(authenticationToken).getPrincipal();
         }
-        throw new OAuth2AuthenticationException("499");
+        throw new OAuth2AuthenticationException("401");
     }
 }
