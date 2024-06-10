@@ -7,11 +7,14 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -24,7 +27,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "@class")
-public class SecurityUserDetails implements UserDetails, Serializable {
+public class SecurityUserDetails implements UserDetails, OAuth2AuthenticatedPrincipal, Serializable {
 
     @Serial
     private static final long serialVersionUID = 3957586021470480642L;
@@ -36,6 +39,12 @@ public class SecurityUserDetails implements UserDetails, Serializable {
     private Integer status;
 
     private List<String> roles;
+
+    @Override
+    @JsonIgnore
+    public Map<String, Object> getAttributes() {
+        return Collections.emptyMap();
+    }
 
     @Override
     @JsonIgnore
@@ -82,5 +91,11 @@ public class SecurityUserDetails implements UserDetails, Serializable {
         this.password = password;
         this.status = status;
         this.roles = roles;
+    }
+
+    @Override
+    @JsonIgnore
+    public String getName() {
+        return this.getUsername();
     }
 }

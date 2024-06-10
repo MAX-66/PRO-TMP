@@ -3,7 +3,12 @@ package com.brenden.cloud.auth.token;
 import com.brenden.cloud.auth.model.RedisOAuth2Authorization;
 import com.brenden.cloud.auth.repository.RedisOAuth2AuthorizationRepository;
 import com.brenden.cloud.utils.JacksonUtil;
+import com.fasterxml.jackson.databind.type.MapType;
+import jodd.util.StringUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.jackson2.SecurityJackson2Modules;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2DeviceCode;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
@@ -13,10 +18,13 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationCode;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.security.Principal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
@@ -38,6 +46,12 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
     private final RedisOAuth2AuthorizationRepository redisOAuth2AuthorizationRepository;
 
     private final RegisteredClientRepository registeredClientRepository;
+
+
+    static {
+        JacksonUtil.getObjectMapper().registerModule(new OAuth2AuthorizationServerJackson2Module())
+                .registerModules(SecurityJackson2Modules.getModules(RedisOAuth2AuthorizationService.class.getClassLoader()));
+    }
 
     @Override
     public void save(OAuth2Authorization authorization) {
@@ -62,7 +76,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
 
     @Override
     public OAuth2Authorization findByToken(String token, OAuth2TokenType tokenType) {
-        return null;
+        return redisOAuth2AuthorizationRepository.findByAccessTokenValue(token).map(this::convent).orElse(null);
     }
 
     private RedisOAuth2Authorization convent(OAuth2Authorization authorization) {
@@ -90,9 +104,102 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
     }
 
     private OAuth2Authorization convent(RedisOAuth2Authorization authorization) {
-        return null;
+        RegisteredClient registeredClient = registeredClientRepository.findById(authorization.getRegisteredClientId());
+        Assert.isTrue(Objects.nonNull(registeredClient), "registeredClient is null");
+        OAuth2Authorization.Builder authorizationBuilder = OAuth2Authorization.withRegisteredClient(registeredClient)
+                .id(authorization.getId())
+                .principalName(authorization.getPrincipalName())
+                .authorizedScopes(registeredClient.getScopes())
+                .attribute(Principal.class.getName(), authorization.getAttributes())
+                .authorizationGrantType(new AuthorizationGrantType(authorization.getAuthorizationGrantType()))
+                .authorizedScopes(StringUtils.commaDelimitedListToSet(authorization.getAuthorizedScopes()))
+                .attributes(attributesConsumer -> attributesConsumer.putAll(JacksonUtil.toMap(authorization.getAttributes())));
+        if (StringUtil.isNotEmpty(authorization.getState())) {
+            authorizationBuilder.attribute(STATE, authorization.getState());
+        }
+        // access token
+        parseAccessToken(authorizationBuilder, authorization);
+        // refresh token
+        parseRefreshToken(authorizationBuilder, authorization);
+        // authorization code
+        parseAuthorizationCode(authorizationBuilder, authorization);
+        // oidc id token
+        parseOidcIdToken(authorizationBuilder, authorization);
+        // user code
+        parseUserCode(authorizationBuilder, authorization);
+        // device code
+        parseDeviceCode(authorizationBuilder, authorization);
+        return authorizationBuilder.build();
     }
 
+
+    private void parseAccessToken(OAuth2Authorization.Builder builder, RedisOAuth2Authorization redisOAuth2Authorization) {
+        String accessTokenValue = redisOAuth2Authorization.getAccessTokenValue();
+        if (Objects.nonNull(accessTokenValue)) {
+            OAuth2AccessToken accessToken = new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER, accessTokenValue,
+                    redisOAuth2Authorization.getAccessTokenIssuedAt(),
+                    redisOAuth2Authorization.getAccessTokenExpiresAt(),
+                    StringUtils.commaDelimitedListToSet(redisOAuth2Authorization.getAccessTokenScopes()));
+            builder.token(accessToken,
+                    metadata -> metadata.putAll(JacksonUtil.toMap(redisOAuth2Authorization.getAccessTokenMetadata())));
+        }
+    }
+
+    private void parseRefreshToken(OAuth2Authorization.Builder builder, RedisOAuth2Authorization redisOAuth2Authorization) {
+        String refreshTokenValue = redisOAuth2Authorization.getRefreshTokenValue();
+        if (Objects.nonNull(refreshTokenValue)) {
+            OAuth2RefreshToken refreshToken = new OAuth2RefreshToken(refreshTokenValue,
+                    redisOAuth2Authorization.getRefreshTokenIssuedAt(),
+                    redisOAuth2Authorization.getRefreshTokenExpiresAt());
+            builder.token(refreshToken,
+                    metadata -> metadata.putAll(JacksonUtil.toMap(redisOAuth2Authorization.getRefreshTokenMetadata())));
+        }
+    }
+
+    private void parseAuthorizationCode(OAuth2Authorization.Builder builder, RedisOAuth2Authorization redisOAuth2Authorization) {
+        String authorizationCodeValue = redisOAuth2Authorization.getAuthorizationCodeValue();
+        if (Objects.nonNull(authorizationCodeValue)) {
+            OAuth2AuthorizationCode authorizationCode = new OAuth2AuthorizationCode(authorizationCodeValue,
+                    redisOAuth2Authorization.getAuthorizationCodeIssuedAt(),
+                    redisOAuth2Authorization.getAuthorizationCodeExpiresAt());
+            builder.token(authorizationCode, metadata -> metadata
+                    .putAll(JacksonUtil.toMap(redisOAuth2Authorization.getAuthorizationCodeMetadata())));
+        }
+    }
+
+    private void parseOidcIdToken(OAuth2Authorization.Builder builder, RedisOAuth2Authorization redisOAuth2Authorization) {
+        String oidcIdTokenValue = redisOAuth2Authorization.getOidcIdTokenValue();
+        if (Objects.nonNull(oidcIdTokenValue)) {
+            OidcIdToken oidcIdToken = new OidcIdToken(oidcIdTokenValue,
+                    redisOAuth2Authorization.getOidcIdTokenIssuedAt(),
+                    redisOAuth2Authorization.getOidcIdTokenExpiresAt(),
+                    JacksonUtil.toMap(redisOAuth2Authorization.getOidcIdTokenClaims()));
+            builder.token(oidcIdToken,
+                    metadata -> metadata.putAll(JacksonUtil.toMap(redisOAuth2Authorization.getOidcIdTokenMetadata())));
+        }
+    }
+
+    private void parseUserCode(OAuth2Authorization.Builder builder, RedisOAuth2Authorization redisOAuth2Authorization) {
+        String userCodeValue = redisOAuth2Authorization.getUserCodeValue();
+        if (Objects.nonNull(userCodeValue)) {
+            OAuth2UserCode userCode = new OAuth2UserCode(userCodeValue, redisOAuth2Authorization.getUserCodeIssuedAt(),
+                    redisOAuth2Authorization.getUserCodeExpiresAt());
+            builder.token(userCode,
+                    metadata -> metadata.putAll(JacksonUtil.toMap(redisOAuth2Authorization.getUserCodeMetadata())));
+        }
+    }
+
+    private void parseDeviceCode(OAuth2Authorization.Builder builder, RedisOAuth2Authorization redisOAuth2Authorization) {
+        String deviceCodeValue = redisOAuth2Authorization.getDeviceCodeValue();
+        if (Objects.nonNull(deviceCodeValue)) {
+            OAuth2DeviceCode deviceCode = new OAuth2DeviceCode(deviceCodeValue,
+                    redisOAuth2Authorization.getDeviceCodeIssuedAt(),
+                    redisOAuth2Authorization.getDeviceCodeExpiresAt());
+            builder.token(deviceCode,
+                    metadata -> metadata.putAll(JacksonUtil.toMap(redisOAuth2Authorization.getDeviceCodeMetadata())));
+        }
+    }
+    
     private void setAccessToken(RedisOAuth2Authorization redisOAuth2Authorization, OAuth2Authorization.Token<OAuth2AccessToken> token) {
         if (Objects.nonNull(token)) {
             OAuth2AccessToken accessToken = token.getToken();

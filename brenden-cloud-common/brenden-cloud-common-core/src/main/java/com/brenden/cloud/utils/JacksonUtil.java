@@ -1,6 +1,9 @@
 package com.brenden.cloud.utils;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -34,8 +37,12 @@ public class JacksonUtil {
         // 反序列化: JSON 字段中有Java对象中没有不报错
         MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
+//        MAPPER.activateDefaultTyping(MAPPER.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+
+
         // 序列化: 排除值为 null 的对象
         MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
         MAPPER.registerModule(new JavaTimeModule());
 
     }

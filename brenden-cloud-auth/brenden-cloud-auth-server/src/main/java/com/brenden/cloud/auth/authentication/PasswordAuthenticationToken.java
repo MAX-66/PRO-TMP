@@ -4,8 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * <p>
@@ -17,7 +20,7 @@ import java.util.Collection;
  */
 @Getter
 @Setter
-public class PasswordAuthenticationToken extends UsernamePasswordAuthenticationToken {
+public class PasswordAuthenticationToken extends UsernamePasswordAuthenticationToken implements OAuth2AuthenticatedPrincipal {
 
     private String username;
 
@@ -45,5 +48,15 @@ public class PasswordAuthenticationToken extends UsernamePasswordAuthenticationT
     @Override
     public Object getCredentials() {
         return this.password;
+    }
+
+    @Override
+    public <A> A getAttribute(String name) {
+        return OAuth2AuthenticatedPrincipal.super.getAttribute(name);
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return Collections.emptyMap();
     }
 }
