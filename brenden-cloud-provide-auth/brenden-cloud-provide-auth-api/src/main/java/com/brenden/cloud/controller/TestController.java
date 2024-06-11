@@ -1,5 +1,7 @@
 package com.brenden.cloud.controller;
 
+import com.brenden.cloud.error.GlobalCodeEnum;
+import com.brenden.cloud.error.GlobalException;
 import com.brenden.cloud.redis.utils.RedisUtil;
 import com.brenden.cloud.redis.utils.RedissonUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,7 +47,7 @@ public class TestController {
     @Operation(summary = "读取")
     @GetMapping("/get2")
     public Object get2() {
-        return "11112222";
+        throw new GlobalException(GlobalCodeEnum.GC_800003);
     }
 
 

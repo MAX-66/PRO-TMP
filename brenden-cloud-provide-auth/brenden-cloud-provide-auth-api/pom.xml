@@ -19,10 +19,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.brenden.cloud.provide</groupId>
             <artifactId>brenden-cloud-provide-auth-service</artifactId>
         </dependency>

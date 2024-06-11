@@ -15,7 +15,6 @@
 
     <modules>
         <module>brenden-cloud-auth-server</module>
-        <module>brenden-cloud-auth-resource</module>
     </modules>
 
 </project>

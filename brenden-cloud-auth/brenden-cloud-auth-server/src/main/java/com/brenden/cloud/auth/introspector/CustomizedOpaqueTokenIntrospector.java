@@ -1,11 +1,12 @@
 package com.brenden.cloud.auth.introspector;
 
 import com.brenden.cloud.auth.user.SecurityUserDetails;
+import com.brenden.cloud.error.GlobalCodeEnum;
+import com.brenden.cloud.error.GlobalException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
@@ -34,7 +35,7 @@ public class CustomizedOpaqueTokenIntrospector implements OpaqueTokenIntrospecto
     public OAuth2AuthenticatedPrincipal introspect(String token) {
         OAuth2Authorization oAuth2Authorization = oAuth2AuthorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);
         if (Objects.isNull(oAuth2Authorization)) {
-            throw new OAuth2AuthenticationException("401");
+            throw new GlobalException(GlobalCodeEnum.GC_800002);
         }
         OAuth2Authorization.Token<OAuth2AccessToken> accessToken = oAuth2Authorization.getAccessToken();
         Instant expiresAt = accessToken.getToken().getExpiresAt();
@@ -45,6 +46,6 @@ public class CustomizedOpaqueTokenIntrospector implements OpaqueTokenIntrospecto
             UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) obj;
             return (SecurityUserDetails) Objects.requireNonNull(authenticationToken).getPrincipal();
         }
-        throw new OAuth2AuthenticationException("401");
+        throw new GlobalException(GlobalCodeEnum.GC_800002);
     }
 }

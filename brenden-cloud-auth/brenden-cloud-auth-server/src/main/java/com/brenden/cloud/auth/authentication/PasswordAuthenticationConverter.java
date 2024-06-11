@@ -1,11 +1,11 @@
 package com.brenden.cloud.auth.authentication;
 
 import com.brenden.cloud.auth.constants.OauthConstants;
+import com.brenden.cloud.error.GlobalCodeEnum;
+import com.brenden.cloud.error.GlobalException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.util.LinkedMultiValueMap;
@@ -39,16 +39,14 @@ public class PasswordAuthenticationConverter implements AuthenticationConverter 
         // USERNAME (REQUIRED)
         String username = parameters.getFirst(OAuth2ParameterNames.USERNAME);
         if (!StringUtils.hasText(username) || parameters.get(OAuth2ParameterNames.USERNAME).size() != 1) {
-            throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_REQUEST);
+            throw new GlobalException(GlobalCodeEnum.GC_800006);
         }
-
 
         // PASSWORD (REQUIRED)
         String password = parameters.getFirst(OAuth2ParameterNames.PASSWORD);
         if (!StringUtils.hasText(password) || parameters.get(OAuth2ParameterNames.PASSWORD).size() != 1) {
-            throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_REQUEST);
+            throw new GlobalException(GlobalCodeEnum.GC_800006);
         }
-
 
         return new PasswordAuthenticationToken(username, password, clientPrincipal, clientPrincipal.getCredentials());
     }

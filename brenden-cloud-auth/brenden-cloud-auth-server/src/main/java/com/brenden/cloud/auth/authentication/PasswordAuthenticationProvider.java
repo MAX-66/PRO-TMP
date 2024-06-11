@@ -1,6 +1,8 @@
 package com.brenden.cloud.auth.authentication;
 
 import com.brenden.cloud.auth.constants.OauthConstants;
+import com.brenden.cloud.error.GlobalCodeEnum;
+import com.brenden.cloud.error.GlobalException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -75,7 +77,7 @@ public class PasswordAuthenticationProvider extends DaoAuthenticationProvider {
         // RegisteredClient
         RegisteredClient registeredClient = oAuth2ClientAuthenticationToken.getRegisteredClient();
         if (Objects.isNull(registeredClient)) {
-            throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_REQUEST);
+            throw new GlobalException(400, "");
         }
         // Authentication
 
@@ -91,7 +93,7 @@ public class PasswordAuthenticationProvider extends DaoAuthenticationProvider {
                 .tokenType(ACCESS_TOKEN);
         DefaultOAuth2TokenContext tokenContext = tokenBuild.build();
         OAuth2Token generatedAccessToken = Optional.ofNullable(tokenGenerator.generate(tokenContext))
-                .orElseThrow(() -> new OAuth2AuthenticationException("generate token fail"));
+                .orElseThrow(() -> new GlobalException(GlobalCodeEnum.GC_800003));
         OAuth2AccessToken accessToken = new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER,
                 generatedAccessToken.getTokenValue(), generatedAccessToken.getIssuedAt(),
                 generatedAccessToken.getExpiresAt(), tokenContext.getAuthorizedScopes());
@@ -116,7 +118,7 @@ public class PasswordAuthenticationProvider extends DaoAuthenticationProvider {
         if (registeredClient.getAuthorizationGrantTypes().contains(AuthorizationGrantType.REFRESH_TOKEN)) {
             DefaultOAuth2TokenContext refreshTokenContext = tokenBuild.tokenType(REFRESH_TOKEN).build();
             OAuth2Token generatedRefreshToken = Optional.ofNullable(tokenGenerator.generate(refreshTokenContext))
-                    .orElseThrow(() -> new OAuth2AuthenticationException("generate refresh token fail"));
+                    .orElseThrow(() -> new GlobalException(GlobalCodeEnum.GC_800003));
             refreshToken = (OAuth2RefreshToken) generatedRefreshToken;
             authorizationBuilder.refreshToken(refreshToken);
         }
@@ -133,9 +135,7 @@ public class PasswordAuthenticationProvider extends DaoAuthenticationProvider {
             // @formatter:on
             OAuth2Token generatedIdToken = this.tokenGenerator.generate(tokenContext);
             if (!(generatedIdToken instanceof Jwt)) {
-                OAuth2Error error = new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR,
-                        "The token generator failed to generate the ID token.", ERROR_URI);
-                throw new OAuth2AuthenticationException(error);
+                throw new GlobalException(GlobalCodeEnum.GC_800003);
             }
 
             idToken = new OidcIdToken(generatedIdToken.getTokenValue(), generatedIdToken.getIssuedAt(),

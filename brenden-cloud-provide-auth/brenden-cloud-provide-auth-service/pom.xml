@@ -18,13 +18,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.brenden.cloud.auth</groupId>
-            <artifactId>brenden-cloud-auth-server</artifactId>
+            <groupId>com.brenden.cloud.common</groupId>
+            <artifactId>brenden-cloud-common-core</artifactId>
         </dependency>
         <dependency>
             <groupId>com.brenden.cloud.auth</groupId>
-            <artifactId>brenden-cloud-auth-resource</artifactId>
-            <version>1.0</version>
+            <artifactId>brenden-cloud-auth-server</artifactId>
         </dependency>
         <dependency>
             <groupId>com.brenden.cloud.provide</groupId>
