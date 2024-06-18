@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResultEntity<?> handler(Exception exception) {
         log.error("system exception, error msg: {}", exception.getMessage());
-        return ResultEntity.fail(500, exception.getMessage());
+        return ResultEntity.fail("500", exception.getMessage());
     }
 
 }

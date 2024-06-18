@@ -6,6 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -21,6 +22,9 @@ import java.util.Map;
 @Getter
 @Setter
 public class PasswordAuthenticationToken extends UsernamePasswordAuthenticationToken implements OAuth2AuthenticatedPrincipal {
+
+    @Serial
+    private static final long serialVersionUID = 607280695175978849L;
 
     private String username;
 

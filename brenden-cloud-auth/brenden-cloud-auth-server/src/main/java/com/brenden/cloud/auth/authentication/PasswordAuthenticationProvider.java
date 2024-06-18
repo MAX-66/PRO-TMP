@@ -77,7 +77,7 @@ public class PasswordAuthenticationProvider extends DaoAuthenticationProvider {
         // RegisteredClient
         RegisteredClient registeredClient = oAuth2ClientAuthenticationToken.getRegisteredClient();
         if (Objects.isNull(registeredClient)) {
-            throw new GlobalException(400, "");
+            throw new GlobalException("400", "");
         }
         // Authentication
 

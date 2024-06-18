@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.SneakyThrows;
@@ -36,15 +37,13 @@ public class JacksonUtil {
     static {
         // 反序列化: JSON 字段中有Java对象中没有不报错
         MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-//        MAPPER.activateDefaultTyping(MAPPER.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
-
+        // 禁用默认的多态类型处理
+        MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
         // 序列化: 排除值为 null 的对象
         MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         MAPPER.registerModule(new JavaTimeModule());
-
     }
 
     public static ObjectMapper getObjectMapper() {
@@ -75,6 +74,12 @@ public class JacksonUtil {
     public static <T> T toObject(String content, JavaType javaType) {
         return getObjectMapper().readValue(content, javaType);
     }
+
+    @SneakyThrows
+    public static <T> T toObject(String content, Class<T> valueType) {
+        return getObjectMapper().readValue(content, valueType);
+    }
+
 
     public static <T> List<T> toList(String content, Class<T> clazz) {
         JavaType javaType = getObjectMapper().getTypeFactory().constructParametricType(List.class, clazz);

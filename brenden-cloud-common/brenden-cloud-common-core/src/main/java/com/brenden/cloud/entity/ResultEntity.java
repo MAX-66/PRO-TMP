@@ -19,7 +19,7 @@ public class ResultEntity<T> implements Serializable {
     @Serial
     private static final long serialVersionUID = -5418751571815620505L;
 
-    private Integer resultCode;
+    private String resultCode;
 
     private String resultMsg;
 
@@ -36,7 +36,7 @@ public class ResultEntity<T> implements Serializable {
     }
 
 
-    public static <T> ResultEntity<T> fail(Integer errorCode, String errorMsg) {
+    public static <T> ResultEntity<T> fail(String errorCode, String errorMsg) {
         ResultEntity<T> result = new ResultEntity<>();
         result.setResultCode(errorCode);
         result.setResultMsg(errorMsg);

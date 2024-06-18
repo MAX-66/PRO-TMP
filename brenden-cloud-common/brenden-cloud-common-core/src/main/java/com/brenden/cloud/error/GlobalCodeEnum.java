@@ -13,20 +13,30 @@ import lombok.Getter;
 @Getter
 public enum GlobalCodeEnum {
 
-    GC_0(0, "操作成功!"),
-    GC_500(500, "操作失败!"),
-    GC_800006(800006, "参数错误!"),
-    GC_800001(800001, "无访问权限!"),
-    GC_800002(800002, "认证失败!"),
-    GC_800003(800003, "授权失败!");
+    GC_0("0", "操作成功!"),
+    GC_500("500", "操作失败!"),
+    GC_800006("800006", "参数错误!"),
+    GC_800001("800001", "无访问权限!"),
+    GC_800002("800002", "认证失败!"),
+    GC_800003("800003", "授权失败!");
 
-    private final Integer code;
+    private final String code;
 
     private final String msg;
 
-    GlobalCodeEnum(Integer code, String msg) {
+    GlobalCodeEnum(String code, String msg) {
         this.code = code;
         this.msg = msg;
+    }
+
+
+    public static GlobalCodeEnum getEnum(String code) {
+        for (GlobalCodeEnum ele : GlobalCodeEnum.values()) {
+            if (ele.code.equals(code)) {
+                return ele;
+            }
+        }
+        return null;
     }
 
 

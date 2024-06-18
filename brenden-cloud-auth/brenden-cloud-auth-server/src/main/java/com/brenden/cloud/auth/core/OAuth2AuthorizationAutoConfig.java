@@ -45,6 +45,7 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Refr
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.security.oauth2.server.authorization.web.authentication.DelegatingAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
@@ -110,7 +111,8 @@ public class OAuth2AuthorizationAutoConfig {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
                                                                       OAuth2AuthorizationService authorizationService,
-                                                                      AuthenticationProvider passwordAuthenticationProvider)
+                                                                      AuthenticationProvider passwordAuthenticationProvider,
+                                                                      AuthenticationFailureHandler authenticationFailureHandler)
             throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
@@ -119,7 +121,8 @@ public class OAuth2AuthorizationAutoConfig {
                 .authorizationService(authorizationService);
         authorizationServerConfigurer.tokenEndpoint(tokenEndpoint ->
                 tokenEndpoint.accessTokenRequestConverter(new DelegatingAuthenticationConverter(List.of(new PasswordAuthenticationConverter())))
-                        .authenticationProvider(passwordAuthenticationProvider));
+                        .authenticationProvider(passwordAuthenticationProvider)
+                        .errorResponseHandler(authenticationFailureHandler));
         http.httpBasic(AbstractHttpConfigurer::disable);
         http.exceptionHandling((exceptions) ->
                 exceptions.defaultAuthenticationEntryPointFor(new LoginUrlAuthenticationEntryPoint("/login"),

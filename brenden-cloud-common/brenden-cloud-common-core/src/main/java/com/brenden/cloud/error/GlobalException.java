@@ -17,7 +17,7 @@ public class GlobalException extends RuntimeException{
     @java.io.Serial
     private static final long serialVersionUID = -7034897190745766939L;
 
-    private final Integer errorCode;
+    private final String errorCode;
 
     private final String errorMsg;
 
@@ -27,7 +27,7 @@ public class GlobalException extends RuntimeException{
         this.errorMsg = codeEnum.getMsg();
     }
 
-    public GlobalException(Integer errorCode, String errorMsg) {
+    public GlobalException(String errorCode, String errorMsg) {
         super(errorMsg);
         this.errorCode = errorCode;
         this.errorMsg = errorMsg;
