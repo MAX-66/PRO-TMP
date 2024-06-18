@@ -21,7 +21,7 @@ import java.util.Map;
 
 /**
  * <p>
- *
+ * 自定义AccessToken转换
  * </p>
  *
  * @author lxq
