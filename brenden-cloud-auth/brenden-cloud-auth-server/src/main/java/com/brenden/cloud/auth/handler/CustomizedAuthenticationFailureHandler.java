@@ -1,7 +1,6 @@
 package com.brenden.cloud.auth.handler;
 
 import com.brenden.cloud.entity.ResultEntity;
-import com.brenden.cloud.error.GlobalCodeEnum;
 import com.brenden.cloud.utils.JacksonUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,7 +9,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;

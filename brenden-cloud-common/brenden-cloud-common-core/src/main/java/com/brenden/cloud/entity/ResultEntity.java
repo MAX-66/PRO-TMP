@@ -27,13 +27,14 @@ public class ResultEntity<T> implements Serializable {
 
     private long timestamp = System.currentTimeMillis();
 
-    private ResultEntity<T> setData(T data) {
+    public static <T> ResultEntity<T> success(T data) {
         ResultEntity<T> result = new ResultEntity<>();
         result.data = data;
         result.resultCode = GlobalCodeEnum.GC_0.getCode();
         result.resultMsg = GlobalCodeEnum.GC_0.getMsg();
         return result;
     }
+
 
 
     public static <T> ResultEntity<T> fail(String errorCode, String errorMsg) {
