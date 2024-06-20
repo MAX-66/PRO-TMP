@@ -1,4 +1,4 @@
-package com.brenden.cloud.auth.core;
+package com.brenden.cloud.auth.config;
 
 import com.brenden.cloud.auth.authentication.PasswordAuthenticationConverter;
 import com.brenden.cloud.auth.authentication.PasswordAuthenticationProvider;
