@@ -6,8 +6,11 @@ import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 import org.springframework.data.redis.core.index.Indexed;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
+
+import static com.brenden.cloud.auth.constants.OauthConstants.OAUTH2_AUTHORIZATION_PREFIX;
 
 /**
  * <p>
@@ -18,9 +21,11 @@ import java.time.Instant;
  * @since 2024/4/11
  */
 @Data
-@RedisHash("oauth2:authorization")
+@RedisHash(OAUTH2_AUTHORIZATION_PREFIX)
 public class RedisOAuth2Authorization implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 5869471912969396221L;
     /**
      * 主键
      */

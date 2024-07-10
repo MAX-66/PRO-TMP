@@ -4,6 +4,7 @@ import com.brenden.cloud.auth.authentication.PasswordAuthenticationConverter;
 import com.brenden.cloud.auth.authentication.PasswordAuthenticationProvider;
 import com.brenden.cloud.auth.repository.RedisOAuth2AuthorizationRepository;
 import com.brenden.cloud.auth.token.RedisOAuth2AuthorizationService;
+import com.brenden.cloud.redis.utils.RedisUtil;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -87,14 +88,6 @@ public class OAuth2AuthorizationAutoConfig {
     public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
         return new JdbcRegisteredClientRepository(jdbcTemplate);
     }
-
-
-    @Bean
-    public OAuth2AuthorizationService oauth2AuthorizationService(RedisOAuth2AuthorizationRepository redisOAuth2AuthorizationRepository,
-                                                                 RegisteredClientRepository registeredClientRepository) {
-        return new RedisOAuth2AuthorizationService(redisOAuth2AuthorizationRepository, registeredClientRepository);
-    }
-
 
     @Bean
     public OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {

@@ -13,7 +13,6 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClaimAccessor;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.security.oauth2.core.OAuth2Token;
@@ -30,7 +29,12 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.context.AuthorizationServerContextHolder;
 import org.springframework.security.oauth2.server.authorization.token.DefaultOAuth2TokenContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
+import org.springframework.util.StringUtils;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.HashMap;
@@ -101,6 +105,8 @@ public class PasswordAuthenticationProvider extends DaoAuthenticationProvider {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(user, user.getUsername(), user.getAuthorities());
         OAuth2Authorization.Builder authorizationBuilder = OAuth2Authorization.withRegisteredClient(registeredClient)
+                // 使用client id 与 登录名 md5算法作为id
+                .id(generateKey(registeredClient.getClientId(), user.getUsername()))
                 .principalName(authentication.getName())
                 .authorizedScopes(registeredClient.getScopes())
                 .attribute(Principal.class.getName(), usernamePasswordAuthenticationToken)
@@ -176,5 +182,21 @@ public class PasswordAuthenticationProvider extends DaoAuthenticationProvider {
         return new AuthorizationGrantType(OauthConstants.AGENT_TYPE_PASSWORD);
     }
 
+
+    private String generateKey(String clientId, String userId) {
+        try {
+            Map<String, Object> values = new HashMap<>();
+            if (StringUtils.hasLength(userId)) {
+                values.put("username", userId);
+            }
+
+            values.put("client_id", clientId);
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            byte[] bytes = digest.digest(values.toString().getBytes(StandardCharsets.UTF_8));
+            return String.format("%032x", new BigInteger(1, bytes));
+        } catch (NoSuchAlgorithmException var4) {
+            throw new IllegalStateException("MD5 algorithm not available.  Fatal (should be in the JDK).", var4);
+        }
+    }
 
 }

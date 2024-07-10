@@ -54,6 +54,6 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("用户未初始化");
         }
         List<String> roleNameList = roleDOList.stream().map(RoleDO::getName).collect(Collectors.toList());
-        return new SecurityUserDetails(userDO.getUsername(), userDO.getPassword(), userDO.getStatus(), roleNameList);
+        return new SecurityUserDetails(userDO.getId(), userDO.getUsername(), userDO.getPassword(), userDO.getStatus(), roleNameList);
     }
 }

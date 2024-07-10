@@ -2,12 +2,17 @@ package com.brenden.cloud.auth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.keygen.Base64StringKeyGenerator;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2AccessTokenGenerator;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.Base64;
 
 /**
  * <p>
@@ -41,7 +46,6 @@ public class OAuth2ResourceServerAutoConfig {
                         .anyRequest().authenticated()).formLogin(Customizer.withDefaults());
         http.exceptionHandling().authenticationEntryPoint((request, response, authException) ->
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED));*/
-
         http.authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(STATIC_ANT_MATCHERS).permitAll()
                         .anyRequest().authenticated()

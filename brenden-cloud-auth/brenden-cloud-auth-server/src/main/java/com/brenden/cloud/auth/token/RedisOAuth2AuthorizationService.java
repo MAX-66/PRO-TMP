@@ -2,7 +2,7 @@ package com.brenden.cloud.auth.token;
 
 import com.brenden.cloud.auth.model.RedisOAuth2Authorization;
 import com.brenden.cloud.auth.repository.RedisOAuth2AuthorizationRepository;
-import com.brenden.cloud.utils.JacksonUtil;
+import com.brenden.cloud.redis.utils.RedisUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
@@ -25,6 +25,7 @@ import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -35,6 +36,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.brenden.cloud.auth.constants.OauthConstants.OAUTH2_ACCESS_TOKEN_PREFIX;
+import static com.brenden.cloud.auth.constants.OauthConstants.OAUTH2_AUTHORIZATION_ID_SUFFIX;
+import static com.brenden.cloud.auth.constants.OauthConstants.OAUTH2_AUTHORIZATION_PREFIX;
+import static com.brenden.cloud.constant.SpecialCharacters.COLON;
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.STATE;
 
 /**
@@ -46,11 +51,15 @@ import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterN
  * @since 2023/9/8
  */
 @RequiredArgsConstructor
+@Service
 public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationService {
 
     private final RedisOAuth2AuthorizationRepository redisOAuth2AuthorizationRepository;
 
     private final RegisteredClientRepository registeredClientRepository;
+
+    private final RedisUtil redisUtil;
+
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -76,12 +85,23 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
         redisOAuth2Authorization.setTtl(ChronoUnit.SECONDS.between(Instant.now(), redisOAuth2Authorization.getAccessTokenExpiresAt()));
         redisOAuth2AuthorizationRepository.deleteById(authorization.getId());
         redisOAuth2AuthorizationRepository.save(redisOAuth2Authorization);
+
+        String idKey = OAUTH2_AUTHORIZATION_PREFIX + COLON + authorization.getId() + OAUTH2_AUTHORIZATION_ID_SUFFIX;
+        redisUtil.expire(idKey, redisOAuth2Authorization.getTtl());
+
+        String accessTokenKey = OAUTH2_ACCESS_TOKEN_PREFIX + redisOAuth2Authorization.getAccessTokenValue();
+        redisUtil.expire(accessTokenKey, redisOAuth2Authorization.getTtl());
     }
 
     @Override
     public void remove(OAuth2Authorization authorization) {
         Assert.isTrue(Objects.nonNull(authorization), "authorization is null");
-        redisOAuth2AuthorizationRepository.deleteById(authorization.getId());
+        redisOAuth2AuthorizationRepository.findById(authorization.getId()).ifPresent(redisOAuth2Authorization -> {
+            redisOAuth2AuthorizationRepository.deleteById(redisOAuth2Authorization.getId());
+            String idKey = OAUTH2_AUTHORIZATION_PREFIX + authorization.getId();
+            String accessTokenKey = OAUTH2_ACCESS_TOKEN_PREFIX + redisOAuth2Authorization.getAccessTokenValue();
+            redisUtil.del(idKey, accessTokenKey);
+        });
     }
 
     @Override

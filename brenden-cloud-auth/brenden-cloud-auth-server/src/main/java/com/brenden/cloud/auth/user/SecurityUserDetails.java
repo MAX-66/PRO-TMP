@@ -8,6 +8,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,6 +17,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import static com.brenden.cloud.constant.Constant.YES;
 
 /**
  * <p>
@@ -31,6 +35,8 @@ public class SecurityUserDetails implements UserDetails, OAuth2AuthenticatedPrin
 
     @Serial
     private static final long serialVersionUID = 3957586021470480642L;
+
+    private Long id;
 
     private String username;
 
@@ -49,7 +55,10 @@ public class SecurityUserDetails implements UserDetails, OAuth2AuthenticatedPrin
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.createAuthorityList(roles.toArray(new String[0]));
+        if (CollectionUtils.isEmpty(roles)) {
+            return Collections.emptyList();
+        }
+        return AuthorityUtils.createAuthorityList(roles);
     }
 
     @Override
@@ -64,29 +73,12 @@ public class SecurityUserDetails implements UserDetails, OAuth2AuthenticatedPrin
 
     @Override
     @JsonIgnore
-    public boolean isAccountNonExpired() {
-        return status == 1;
-    }
-
-    @Override
-    @JsonIgnore
-    public boolean isAccountNonLocked() {
-        return status == 1;
-    }
-
-    @Override
-    @JsonIgnore
-    public boolean isCredentialsNonExpired() {
-        return status == 1;
-    }
-
-    @Override
-    @JsonIgnore
     public boolean isEnabled() {
-        return status == 1;
+        return YES == status;
     }
 
-    public SecurityUserDetails(String username, String password, Integer status, List<String> roles) {
+    public SecurityUserDetails(Long id, String username, String password, Integer status, List<String> roles) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.status = status;
