@@ -41,13 +41,13 @@ public class PasswordAuthenticationConverter implements AuthenticationConverter 
         // USERNAME (REQUIRED)
         String username = parameters.getFirst(OAuth2ParameterNames.USERNAME);
         if (!StringUtils.hasText(username) || parameters.get(OAuth2ParameterNames.USERNAME).size() != 1) {
-            throw new OAuth2AuthenticationException(new OAuth2Error(GlobalCodeEnum.GC_800006.getCode(), GlobalCodeEnum.GC_800006.getMsg(), null));
+            throw new OAuth2AuthenticationException(new OAuth2Error(GlobalCodeEnum.GC_800000.getCode(), GlobalCodeEnum.GC_800000.getMsg(), null));
         }
 
         // PASSWORD (REQUIRED)
         String password = parameters.getFirst(OAuth2ParameterNames.PASSWORD);
         if (!StringUtils.hasText(password) || parameters.get(OAuth2ParameterNames.PASSWORD).size() != 1) {
-            throw new OAuth2AuthenticationException(new OAuth2Error(GlobalCodeEnum.GC_800006.getCode(), GlobalCodeEnum.GC_800006.getMsg(), null));
+            throw new OAuth2AuthenticationException(new OAuth2Error(GlobalCodeEnum.GC_800000.getCode(), GlobalCodeEnum.GC_800000.getMsg(), null));
         }
 
         return new PasswordAuthenticationToken(username, password, clientPrincipal, clientPrincipal.getCredentials());

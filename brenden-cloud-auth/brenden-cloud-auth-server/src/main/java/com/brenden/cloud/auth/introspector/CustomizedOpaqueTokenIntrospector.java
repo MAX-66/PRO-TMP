@@ -4,12 +4,16 @@ import com.brenden.cloud.auth.user.SecurityUserDetails;
 import com.brenden.cloud.error.GlobalCodeEnum;
 import com.brenden.cloud.error.GlobalException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
+import org.springframework.security.oauth2.server.resource.introspection.BadOpaqueTokenException;
+import org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionException;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +39,7 @@ public class CustomizedOpaqueTokenIntrospector implements OpaqueTokenIntrospecto
     public OAuth2AuthenticatedPrincipal introspect(String token) {
         OAuth2Authorization oAuth2Authorization = oAuth2AuthorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);
         if (Objects.isNull(oAuth2Authorization)) {
-            throw new GlobalException(GlobalCodeEnum.GC_800002);
+            throw new BadOpaqueTokenException(GlobalCodeEnum.GC_800002.getMsg());
         }
         OAuth2Authorization.Token<OAuth2AccessToken> accessToken = oAuth2Authorization.getAccessToken();
         Instant expiresAt = accessToken.getToken().getExpiresAt();
@@ -46,6 +50,6 @@ public class CustomizedOpaqueTokenIntrospector implements OpaqueTokenIntrospecto
             UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) obj;
             return (SecurityUserDetails) Objects.requireNonNull(authenticationToken).getPrincipal();
         }
-        throw new GlobalException(GlobalCodeEnum.GC_800002);
+        throw new BadOpaqueTokenException(GlobalCodeEnum.GC_800002.getMsg());
     }
 }
