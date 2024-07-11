@@ -20,13 +20,13 @@ import java.util.concurrent.TimeUnit;
 public class RedissonUtil {
 
     /** 1小时过期 */
-    public static final long HOUR_ONE = 60 * 60;
+    public static final long HOUR_ONE = 60L * 60L;
 
     /** 1天过期 */
-    public static final long DAY_ONE = 60 * 60 * 24;
+    public static final long DAY_ONE = 60L * 60L * 24L;
 
     /** 2小时过期 */
-    public static final long HOUR_TWO = 60 * 60 * 2;
+    public static final long HOUR_TWO = 60L * 60L * 2L;
 
     /** 永不过期 */
     public static final long NOT_EXPIRE = -1;
