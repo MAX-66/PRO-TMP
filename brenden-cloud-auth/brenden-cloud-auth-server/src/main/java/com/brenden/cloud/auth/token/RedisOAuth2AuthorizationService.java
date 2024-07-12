@@ -32,13 +32,17 @@ import org.springframework.util.StringUtils;
 import java.security.Principal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static com.brenden.cloud.auth.constants.OauthConstants.OAUTH2_ACCESS_TOKEN_PREFIX;
 import static com.brenden.cloud.auth.constants.OauthConstants.OAUTH2_AUTHORIZATION_ID_SUFFIX;
 import static com.brenden.cloud.auth.constants.OauthConstants.OAUTH2_AUTHORIZATION_PREFIX;
+import static com.brenden.cloud.auth.constants.OauthConstants.OAUTH2_REFRESH_TOKEN_PREFIX;
 import static com.brenden.cloud.constant.SpecialCharacters.COLON;
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.STATE;
 
@@ -81,8 +85,18 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
     @Override
     public void save(OAuth2Authorization authorization) {
         Assert.isTrue(Objects.nonNull(authorization), "authorization is null");
+
         RedisOAuth2Authorization redisOAuth2Authorization = convent(authorization);
-        redisOAuth2Authorization.setTtl(ChronoUnit.SECONDS.between(Instant.now(), redisOAuth2Authorization.getAccessTokenExpiresAt()));
+        List<Instant> expireAtList = Stream.of(redisOAuth2Authorization.getAuthorizationCodeExpiresAt(),
+                        redisOAuth2Authorization.getAccessTokenExpiresAt(), redisOAuth2Authorization.getOidcIdTokenExpiresAt(),
+                        redisOAuth2Authorization.getRefreshTokenExpiresAt(), redisOAuth2Authorization.getUserCodeExpiresAt(),
+                        redisOAuth2Authorization.getDeviceCodeExpiresAt())
+                .filter(Objects::nonNull)
+                .toList();
+        expireAtList.stream()
+                .max(Comparator.comparing(Instant::getEpochSecond))
+                .ifPresent(instant -> redisOAuth2Authorization.setTtl(ChronoUnit.SECONDS.between(Instant.now(), instant)));
+
         redisOAuth2AuthorizationRepository.deleteById(authorization.getId());
         redisOAuth2AuthorizationRepository.save(redisOAuth2Authorization);
 
@@ -90,7 +104,10 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
         redisUtil.expire(idKey, redisOAuth2Authorization.getTtl());
 
         String accessTokenKey = OAUTH2_ACCESS_TOKEN_PREFIX + redisOAuth2Authorization.getAccessTokenValue();
-        redisUtil.expire(accessTokenKey, redisOAuth2Authorization.getTtl());
+        redisUtil.expire(accessTokenKey, ChronoUnit.SECONDS.between(Instant.now(), redisOAuth2Authorization.getAccessTokenExpiresAt()));
+
+        String refreshTokenKey = OAUTH2_REFRESH_TOKEN_PREFIX + redisOAuth2Authorization.getRefreshTokenValue();
+        redisUtil.expire(refreshTokenKey, ChronoUnit.SECONDS.between(Instant.now(), redisOAuth2Authorization.getRefreshTokenExpiresAt()));
     }
 
     @Override
@@ -100,7 +117,8 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
             redisOAuth2AuthorizationRepository.deleteById(redisOAuth2Authorization.getId());
             String idKey = OAUTH2_AUTHORIZATION_PREFIX + authorization.getId();
             String accessTokenKey = OAUTH2_ACCESS_TOKEN_PREFIX + redisOAuth2Authorization.getAccessTokenValue();
-            redisUtil.del(idKey, accessTokenKey);
+            String refreshTokenKey = OAUTH2_REFRESH_TOKEN_PREFIX + redisOAuth2Authorization.getRefreshTokenValue();
+            redisUtil.del(idKey, accessTokenKey, refreshTokenKey);
         });
     }
 
@@ -112,7 +130,15 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
 
     @Override
     public OAuth2Authorization findByToken(String token, OAuth2TokenType tokenType) {
-        return redisOAuth2AuthorizationRepository.findByAccessTokenValue(token).map(this::convent).orElse(null);
+        Assert.isTrue(StringUtils.hasLength(token), "token is empty");
+        Assert.isTrue(Objects.nonNull(tokenType), "tokenType is null");
+        if (OAuth2TokenType.ACCESS_TOKEN.getValue().equals(tokenType.getValue())) {
+            return redisOAuth2AuthorizationRepository.findByAccessTokenValue(token).map(this::convent).orElse(null);
+        }
+        if (OAuth2TokenType.REFRESH_TOKEN.getValue().equals(tokenType.getValue())) {
+            return redisOAuth2AuthorizationRepository.findByRefreshTokenValue(token).map(this::convent).orElse(null);
+        }
+        return null;
     }
 
     @SneakyThrows

@@ -50,7 +50,9 @@ public class OAuth2ResourceServerAutoConfig {
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.opaqueToken(token -> token.introspector(opaqueTokenIntrospector))
+                        // 资源验证失败(无权限)
                         .accessDeniedHandler(accessDeniedHandler)
+                        // token令牌失效或无效令牌
                         .authenticationEntryPoint(authenticationEntryPoint))
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)

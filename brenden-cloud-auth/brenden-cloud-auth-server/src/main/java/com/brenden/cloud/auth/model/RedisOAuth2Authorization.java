@@ -116,6 +116,7 @@ public class RedisOAuth2Authorization implements Serializable {
     /**
      * refresh token的值
      */
+    @Indexed
     private String refreshTokenValue;
 
     /**

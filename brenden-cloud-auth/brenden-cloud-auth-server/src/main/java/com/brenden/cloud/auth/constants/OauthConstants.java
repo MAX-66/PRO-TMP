@@ -20,6 +20,9 @@ public final class OauthConstants {
     /** oauth2 access token redis存储前缀 */
     public static final String OAUTH2_ACCESS_TOKEN_PREFIX = OAUTH2_AUTHORIZATION_PREFIX + ":accessTokenValue:";
 
+    /** oauth2 refresh token redis存储前缀 */
+    public static final String OAUTH2_REFRESH_TOKEN_PREFIX = OAUTH2_AUTHORIZATION_PREFIX + ":refreshTokenValue:";
+
     /** oauth2 授权信息 redis 索引后缀 */
     public static final String OAUTH2_AUTHORIZATION_ID_SUFFIX = ":idx";
 }
