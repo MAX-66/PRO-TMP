@@ -30,7 +30,6 @@ public class ReactiveRedisAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(name = {"reactiveRedisTemplate"})
-    @ConditionalOnBean({ReactiveRedisConnectionFactory.class})
     public ReactiveRedisTemplate<String, Object> reactiveRedisTemplate(ReactiveRedisConnectionFactory reactiveRedisConnectionFactory) {
         RedisSerializationContext<String, Object> serializationContext =
                 RedisSerializationContext.<String, Object>newSerializationContext()
@@ -46,7 +45,6 @@ public class ReactiveRedisAutoConfiguration {
     @ConditionalOnMissingBean(
             name = {"reactiveStringRedisTemplate"}
     )
-    @ConditionalOnBean({ReactiveRedisConnectionFactory.class})
     public ReactiveStringRedisTemplate reactiveStringRedisTemplate(ReactiveRedisConnectionFactory reactiveRedisConnectionFactory) {
         return new ReactiveStringRedisTemplate(reactiveRedisConnectionFactory);
     }
