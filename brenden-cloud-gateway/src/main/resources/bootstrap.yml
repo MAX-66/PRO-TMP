@@ -1,6 +1,3 @@
 spring:
   application:
     name: @pom.artifactId@
-springdoc:
-  swagger-ui:
-    urls:
