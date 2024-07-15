@@ -2,9 +2,6 @@ package com.brenden.cloud.auth.config;
 
 import com.brenden.cloud.auth.authentication.PasswordAuthenticationConverter;
 import com.brenden.cloud.auth.authentication.PasswordAuthenticationProvider;
-import com.brenden.cloud.auth.repository.RedisOAuth2AuthorizationRepository;
-import com.brenden.cloud.auth.token.RedisOAuth2AuthorizationService;
-import com.brenden.cloud.redis.utils.RedisUtil;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;

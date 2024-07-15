@@ -1,5 +1,6 @@
-package com.brenden.cloud.auth.token;
+package com.brenden.cloud.auth.service;
 
+import com.brenden.cloud.auth.constants.OauthConstants;
 import com.brenden.cloud.auth.model.RedisOAuth2Authorization;
 import com.brenden.cloud.auth.repository.RedisOAuth2AuthorizationRepository;
 import com.brenden.cloud.redis.utils.RedisUtil;
@@ -17,6 +18,7 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2DeviceCode;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.security.oauth2.core.OAuth2UserCode;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationCode;
@@ -39,12 +41,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.brenden.cloud.auth.constants.OauthConstants.OAUTH2_ACCESS_TOKEN_PREFIX;
-import static com.brenden.cloud.auth.constants.OauthConstants.OAUTH2_AUTHORIZATION_ID_SUFFIX;
-import static com.brenden.cloud.auth.constants.OauthConstants.OAUTH2_AUTHORIZATION_PREFIX;
-import static com.brenden.cloud.auth.constants.OauthConstants.OAUTH2_REFRESH_TOKEN_PREFIX;
 import static com.brenden.cloud.constant.SpecialCharacters.COLON;
-import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.STATE;
 
 /**
  * <p>
@@ -100,13 +97,13 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
         redisOAuth2AuthorizationRepository.deleteById(authorization.getId());
         redisOAuth2AuthorizationRepository.save(redisOAuth2Authorization);
 
-        String idKey = OAUTH2_AUTHORIZATION_PREFIX + COLON + authorization.getId() + OAUTH2_AUTHORIZATION_ID_SUFFIX;
+        String idKey = OauthConstants.OAUTH2_AUTHORIZATION_PREFIX + COLON + authorization.getId() + OauthConstants.OAUTH2_AUTHORIZATION_ID_SUFFIX;
         redisUtil.expire(idKey, redisOAuth2Authorization.getTtl());
 
-        String accessTokenKey = OAUTH2_ACCESS_TOKEN_PREFIX + redisOAuth2Authorization.getAccessTokenValue();
+        String accessTokenKey = OauthConstants.OAUTH2_ACCESS_TOKEN_PREFIX + redisOAuth2Authorization.getAccessTokenValue();
         redisUtil.expire(accessTokenKey, ChronoUnit.SECONDS.between(Instant.now(), redisOAuth2Authorization.getAccessTokenExpiresAt()));
 
-        String refreshTokenKey = OAUTH2_REFRESH_TOKEN_PREFIX + redisOAuth2Authorization.getRefreshTokenValue();
+        String refreshTokenKey = OauthConstants.OAUTH2_REFRESH_TOKEN_PREFIX + redisOAuth2Authorization.getRefreshTokenValue();
         redisUtil.expire(refreshTokenKey, ChronoUnit.SECONDS.between(Instant.now(), redisOAuth2Authorization.getRefreshTokenExpiresAt()));
     }
 
@@ -115,9 +112,9 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
         Assert.isTrue(Objects.nonNull(authorization), "authorization is null");
         redisOAuth2AuthorizationRepository.findById(authorization.getId()).ifPresent(redisOAuth2Authorization -> {
             redisOAuth2AuthorizationRepository.deleteById(redisOAuth2Authorization.getId());
-            String idKey = OAUTH2_AUTHORIZATION_PREFIX + authorization.getId();
-            String accessTokenKey = OAUTH2_ACCESS_TOKEN_PREFIX + redisOAuth2Authorization.getAccessTokenValue();
-            String refreshTokenKey = OAUTH2_REFRESH_TOKEN_PREFIX + redisOAuth2Authorization.getRefreshTokenValue();
+            String idKey = OauthConstants.OAUTH2_AUTHORIZATION_PREFIX + authorization.getId();
+            String accessTokenKey = OauthConstants.OAUTH2_ACCESS_TOKEN_PREFIX + redisOAuth2Authorization.getAccessTokenValue();
+            String refreshTokenKey = OauthConstants.OAUTH2_REFRESH_TOKEN_PREFIX + redisOAuth2Authorization.getRefreshTokenValue();
             redisUtil.del(idKey, accessTokenKey, refreshTokenKey);
         });
     }
@@ -150,7 +147,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
         redisOAuth2Authorization.setAuthorizationGrantType(authorization.getAuthorizationGrantType().getValue());
         redisOAuth2Authorization.setAuthorizedScopes(StringUtils.collectionToDelimitedString(authorization.getAuthorizedScopes(), ","));
         redisOAuth2Authorization.setAttributes(MAPPER.writeValueAsString(authorization.getAttributes()));
-        redisOAuth2Authorization.setState(authorization.getAttribute(STATE));
+        redisOAuth2Authorization.setState(authorization.getAttribute(OAuth2ParameterNames.STATE));
         // 添加 access token 信息
         setAccessToken(redisOAuth2Authorization, authorization.getAccessToken());
         // 添加 refresh token 信息
@@ -180,7 +177,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
                 .authorizedScopes(StringUtils.commaDelimitedListToSet(authorization.getAuthorizedScopes()))
                 .attributes(attributesConsumer -> attributesConsumer.putAll(toMap(authorization.getAttributes())));
         if (StringUtil.isNotEmpty(authorization.getState())) {
-            authorizationBuilder.attribute(STATE, authorization.getState());
+            authorizationBuilder.attribute(OAuth2ParameterNames.STATE, authorization.getState());
         }
         // access token
         parseAccessToken(authorizationBuilder, authorization);

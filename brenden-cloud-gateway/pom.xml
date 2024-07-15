@@ -64,6 +64,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.brenden.cloud.auth</groupId>
+            <artifactId>brenden-cloud-auth-resource</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
             <exclusions>

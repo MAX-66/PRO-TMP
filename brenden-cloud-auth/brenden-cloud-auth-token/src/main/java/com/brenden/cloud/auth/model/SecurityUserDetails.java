@@ -1,4 +1,4 @@
-package com.brenden.cloud.auth.user;
+package com.brenden.cloud.auth.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

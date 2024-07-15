@@ -47,7 +47,7 @@ public class TestController {
     @Operation(summary = "读取")
     @GetMapping("/get2")
     public Object get2() {
-        throw new GlobalException(GlobalCodeEnum.GC_800003);
+        throw new GlobalException(GlobalCodeEnum.GC_0);
     }
 
 

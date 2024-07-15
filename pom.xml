@@ -117,6 +117,16 @@
                 <artifactId>brenden-cloud-auth-server</artifactId>
                 <version>${brenden.cloud.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.brenden.cloud.auth</groupId>
+                <artifactId>brenden-cloud-auth-resource</artifactId>
+                <version>${brenden.cloud.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.brenden.cloud.auth</groupId>
+                <artifactId>brenden-cloud-auth-token</artifactId>
+                <version>${brenden.cloud.version}</version>
+            </dependency>
 
             <!--    自定义组件-common        -->
             <dependency>

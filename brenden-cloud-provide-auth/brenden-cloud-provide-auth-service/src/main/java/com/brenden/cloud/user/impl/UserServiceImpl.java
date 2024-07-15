@@ -1,6 +1,6 @@
 package com.brenden.cloud.user.impl;
 
-import com.brenden.cloud.auth.user.SecurityUserDetails;
+import com.brenden.cloud.auth.model.SecurityUserDetails;
 import com.brenden.cloud.sys.persistence.domain.RoleDO;
 import com.brenden.cloud.sys.persistence.domain.UserDO;
 import com.brenden.cloud.sys.persistence.domain.UserRoleDO;
