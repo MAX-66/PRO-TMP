@@ -19,8 +19,8 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import static com.brenden.cloud.constant.NacosConstant.DATA_ID;
-import static com.brenden.cloud.constant.RedisKeyConstant.ROUTER_KEY;
+import static com.brenden.cloud.constant.GatewayConstant.DATA_ID;
+import static com.brenden.cloud.constant.GatewayConstant.ROUTER_KEY;
 
 @Component
 @Slf4j

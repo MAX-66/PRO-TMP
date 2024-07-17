@@ -3,6 +3,7 @@ package com.brenden.cloud.auth.service;
 import com.brenden.cloud.auth.constants.OauthConstants;
 import com.brenden.cloud.auth.model.RedisOAuth2Authorization;
 import com.brenden.cloud.auth.repository.RedisOAuth2AuthorizationRepository;
+import com.brenden.cloud.auth.utils.SecurityJacksonUtils;
 import com.brenden.cloud.redis.utils.RedisUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -60,25 +61,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
     private final RegisteredClientRepository registeredClientRepository;
 
     private final RedisUtil redisUtil;
-
-
-    private static final ObjectMapper MAPPER = new ObjectMapper();
-
-
-    static {
-        // 反序列化: JSON 字段中有Java对象中没有不报错
-        MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        // 序列化: 排除值为 null 的对象
-        MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-
-        MAPPER.registerModule(new JavaTimeModule());
-
-
-        MAPPER.registerModule(new OAuth2AuthorizationServerJackson2Module())
-                .registerModules(SecurityJackson2Modules.getModules(RedisOAuth2AuthorizationService.class.getClassLoader()));
-    }
-
-
+    
     @Override
     public void save(OAuth2Authorization authorization) {
         Assert.isTrue(Objects.nonNull(authorization), "authorization is null");
@@ -146,7 +129,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
         redisOAuth2Authorization.setPrincipalName(authorization.getPrincipalName());
         redisOAuth2Authorization.setAuthorizationGrantType(authorization.getAuthorizationGrantType().getValue());
         redisOAuth2Authorization.setAuthorizedScopes(StringUtils.collectionToDelimitedString(authorization.getAuthorizedScopes(), ","));
-        redisOAuth2Authorization.setAttributes(MAPPER.writeValueAsString(authorization.getAttributes()));
+        redisOAuth2Authorization.setAttributes(SecurityJacksonUtils.toJson(authorization.getAttributes()));
         redisOAuth2Authorization.setState(authorization.getAttribute(OAuth2ParameterNames.STATE));
         // 添加 access token 信息
         setAccessToken(redisOAuth2Authorization, authorization.getAccessToken());
@@ -175,7 +158,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
                 .attribute(Principal.class.getName(), authorization.getAttributes())
                 .authorizationGrantType(new AuthorizationGrantType(authorization.getAuthorizationGrantType()))
                 .authorizedScopes(StringUtils.commaDelimitedListToSet(authorization.getAuthorizedScopes()))
-                .attributes(attributesConsumer -> attributesConsumer.putAll(toMap(authorization.getAttributes())));
+                .attributes(attributesConsumer -> attributesConsumer.putAll(SecurityJacksonUtils.toMap(authorization.getAttributes())));
         if (StringUtil.isNotEmpty(authorization.getState())) {
             authorizationBuilder.attribute(OAuth2ParameterNames.STATE, authorization.getState());
         }
@@ -203,7 +186,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
                     redisOAuth2Authorization.getAccessTokenExpiresAt(),
                     StringUtils.commaDelimitedListToSet(redisOAuth2Authorization.getAccessTokenScopes()));
             builder.token(accessToken,
-                    metadata -> metadata.putAll(toMap(redisOAuth2Authorization.getAccessTokenMetadata())));
+                    metadata -> metadata.putAll(SecurityJacksonUtils.toMap(redisOAuth2Authorization.getAccessTokenMetadata())));
         }
     }
 
@@ -214,7 +197,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
                     redisOAuth2Authorization.getRefreshTokenIssuedAt(),
                     redisOAuth2Authorization.getRefreshTokenExpiresAt());
             builder.token(refreshToken,
-                    metadata -> metadata.putAll(toMap(redisOAuth2Authorization.getRefreshTokenMetadata())));
+                    metadata -> metadata.putAll(SecurityJacksonUtils.toMap(redisOAuth2Authorization.getRefreshTokenMetadata())));
         }
     }
 
@@ -225,7 +208,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
                     redisOAuth2Authorization.getAuthorizationCodeIssuedAt(),
                     redisOAuth2Authorization.getAuthorizationCodeExpiresAt());
             builder.token(authorizationCode, metadata -> metadata
-                    .putAll(toMap(redisOAuth2Authorization.getAuthorizationCodeMetadata())));
+                    .putAll(SecurityJacksonUtils.toMap(redisOAuth2Authorization.getAuthorizationCodeMetadata())));
         }
     }
 
@@ -235,9 +218,9 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
             OidcIdToken oidcIdToken = new OidcIdToken(oidcIdTokenValue,
                     redisOAuth2Authorization.getOidcIdTokenIssuedAt(),
                     redisOAuth2Authorization.getOidcIdTokenExpiresAt(),
-                    toMap(redisOAuth2Authorization.getOidcIdTokenClaims()));
+                    SecurityJacksonUtils.toMap(redisOAuth2Authorization.getOidcIdTokenClaims()));
             builder.token(oidcIdToken,
-                    metadata -> metadata.putAll(toMap(redisOAuth2Authorization.getOidcIdTokenMetadata())));
+                    metadata -> metadata.putAll(SecurityJacksonUtils.toMap(redisOAuth2Authorization.getOidcIdTokenMetadata())));
         }
     }
 
@@ -247,7 +230,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
             OAuth2UserCode userCode = new OAuth2UserCode(userCodeValue, redisOAuth2Authorization.getUserCodeIssuedAt(),
                     redisOAuth2Authorization.getUserCodeExpiresAt());
             builder.token(userCode,
-                    metadata -> metadata.putAll(toMap(redisOAuth2Authorization.getUserCodeMetadata())));
+                    metadata -> metadata.putAll(SecurityJacksonUtils.toMap(redisOAuth2Authorization.getUserCodeMetadata())));
         }
     }
 
@@ -258,7 +241,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
                     redisOAuth2Authorization.getDeviceCodeIssuedAt(),
                     redisOAuth2Authorization.getDeviceCodeExpiresAt());
             builder.token(deviceCode,
-                    metadata -> metadata.putAll(toMap(redisOAuth2Authorization.getDeviceCodeMetadata())));
+                    metadata -> metadata.putAll(SecurityJacksonUtils.toMap(redisOAuth2Authorization.getDeviceCodeMetadata())));
         }
     }
 
@@ -271,7 +254,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
             redisOAuth2Authorization.setAccessTokenExpiresAt(accessToken.getExpiresAt());
             redisOAuth2Authorization.setAccessTokenIssuedAt(accessToken.getIssuedAt());
             redisOAuth2Authorization.setAccessTokenScopes(StringUtils.collectionToDelimitedString(accessToken.getScopes(), ","));
-            redisOAuth2Authorization.setAccessTokenMetadata(MAPPER.writeValueAsString(token.getMetadata()));
+            redisOAuth2Authorization.setAccessTokenMetadata(SecurityJacksonUtils.toJson(token.getMetadata()));
         }
     }
 
@@ -282,7 +265,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
             redisOAuth2Authorization.setRefreshTokenValue(refreshToken.getTokenValue());
             redisOAuth2Authorization.setRefreshTokenExpiresAt(refreshToken.getExpiresAt());
             redisOAuth2Authorization.setRefreshTokenIssuedAt(refreshToken.getIssuedAt());
-            redisOAuth2Authorization.setRefreshTokenMetadata(MAPPER.writeValueAsString(token.getMetadata()));
+            redisOAuth2Authorization.setRefreshTokenMetadata(SecurityJacksonUtils.toJson(token.getMetadata()));
         }
     }
 
@@ -293,8 +276,8 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
             redisOAuth2Authorization.setOidcIdTokenValue(oidcIdToken.getTokenValue());
             redisOAuth2Authorization.setOidcIdTokenExpiresAt(oidcIdToken.getExpiresAt());
             redisOAuth2Authorization.setOidcIdTokenIssuedAt(oidcIdToken.getIssuedAt());
-            redisOAuth2Authorization.setOidcIdTokenClaims(MAPPER.writeValueAsString(oidcIdToken.getClaims()));
-            redisOAuth2Authorization.setOidcIdTokenMetadata(MAPPER.writeValueAsString(token.getMetadata()));
+            redisOAuth2Authorization.setOidcIdTokenClaims(SecurityJacksonUtils.toJson(oidcIdToken.getClaims()));
+            redisOAuth2Authorization.setOidcIdTokenMetadata(SecurityJacksonUtils.toJson(token.getMetadata()));
         }
     }
 
@@ -305,7 +288,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
             redisOAuth2Authorization.setAuthorizationCodeValue(authorizationCode.getTokenValue());
             redisOAuth2Authorization.setAuthorizationCodeExpiresAt(authorizationCode.getExpiresAt());
             redisOAuth2Authorization.setAuthorizationCodeIssuedAt(authorizationCode.getIssuedAt());
-            redisOAuth2Authorization.setAuthorizationCodeMetadata(MAPPER.writeValueAsString(token.getMetadata()));
+            redisOAuth2Authorization.setAuthorizationCodeMetadata(SecurityJacksonUtils.toJson(token.getMetadata()));
         }
     }
 
@@ -316,7 +299,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
             redisOAuth2Authorization.setUserCodeValue(userCode.getTokenValue());
             redisOAuth2Authorization.setUserCodeExpiresAt(userCode.getExpiresAt());
             redisOAuth2Authorization.setUserCodeIssuedAt(userCode.getIssuedAt());
-            redisOAuth2Authorization.setUserCodeMetadata(MAPPER.writeValueAsString(token.getMetadata()));
+            redisOAuth2Authorization.setUserCodeMetadata(SecurityJacksonUtils.toJson(token.getMetadata()));
         }
     }
 
@@ -327,14 +310,8 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
             redisOAuth2Authorization.setDeviceCodeValue(deviceCode.getTokenValue());
             redisOAuth2Authorization.setDeviceCodeExpiresAt(deviceCode.getExpiresAt());
             redisOAuth2Authorization.setDeviceCodeIssuedAt(deviceCode.getIssuedAt());
-            redisOAuth2Authorization.setDeviceCodeMetadata(MAPPER.writeValueAsString(token.getMetadata()));
+            redisOAuth2Authorization.setDeviceCodeMetadata(SecurityJacksonUtils.toJson(token.getMetadata()));
         }
-    }
-
-    @SneakyThrows
-    private static Map<String, Object> toMap(String content) {
-        JavaType javaType = MAPPER.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
-        return MAPPER.readValue(content, javaType);
     }
 
 }

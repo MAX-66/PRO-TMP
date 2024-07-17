@@ -2,6 +2,7 @@ package com.brenden.cloud.filter;
 
 import com.brenden.cloud.error.GlobalCodeEnum;
 import com.brenden.cloud.error.GlobalException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHeaders;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -9,12 +10,11 @@ import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
+import static com.brenden.cloud.constant.GatewayConstant.STATIC_ANT_MATCHERS;
 
 /**
  * <p>
@@ -26,18 +26,24 @@ import java.util.List;
  */
 @Component
 public class AuthGatewayFilter implements GlobalFilter, Ordered {
+
+    private static final AntPathMatcher pathMatcher = new AntPathMatcher();
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         // 排除忽略的请求
-
+        if (isUriMatched(exchange.getRequest().getPath().value())) {
+            return chain.filter(exchange);
+        }
         // 获取token
         ServerHttpRequest request = exchange.getRequest();
-        String authorizationValue = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-        if (!StringUtils.hasLength(authorizationValue)) {
-            return null;
+        String authorizationValue = getParamValue(request, HttpHeaders.AUTHORIZATION);
+        if (StringUtils.isNotBlank(authorizationValue)) {
+//            request.getHeaders().add(HttpHeaders.AUTHORIZATION, authorizationValue);
+//            return chain.filter(exchange.mutate().request(request).build());
+            return chain
+                    .filter(exchange.mutate().request(request.mutate().header(HttpHeaders.AUTHORIZATION, authorizationValue).build()).build());
         }
-
-        // 验证有效性
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
         throw new GlobalException(GlobalCodeEnum.GC_800004);
     }
@@ -46,4 +52,25 @@ public class AuthGatewayFilter implements GlobalFilter, Ordered {
     public int getOrder() {
         return -1;
     }
+
+
+
+    private static boolean isUriMatched(String uri) {
+        for (String pattern : STATIC_ANT_MATCHERS) {
+            if (pathMatcher.match(pattern, uri)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    private static String getParamValue(ServerHttpRequest request, String paramName) {
+        String paramValue = request.getHeaders().getFirst(paramName);
+        if (StringUtils.isBlank(paramValue)) {
+            paramValue = request.getQueryParams().getFirst(paramName);
+        }
+        return paramValue;
+    }
+
 }

@@ -25,8 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.brenden.cloud.constant.NacosConstant.DATA_ID;
-import static com.brenden.cloud.constant.RedisKeyConstant.ROUTER_KEY;
+import static com.brenden.cloud.constant.GatewayConstant.DATA_ID;
+import static com.brenden.cloud.constant.GatewayConstant.ROUTER_KEY;
 
 /**
  * <p>

@@ -52,20 +52,14 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
-
+        
         <dependency>
-            <groupId>com.brenden.cloud.common</groupId>
-            <artifactId>brenden-cloud-common-redis</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.brenden.cloud.common</groupId>
             <artifactId>brenden-cloud-common-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.brenden.cloud.auth</groupId>
-            <artifactId>brenden-cloud-auth-resource</artifactId>
         </dependency>
 
         <dependency>

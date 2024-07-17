@@ -23,6 +23,10 @@
             <artifactId>brenden-cloud-provide-auth-service</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.brenden.cloud.auth</groupId>
+            <artifactId>brenden-cloud-auth-resource</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.brenden.cloud.common</groupId>
             <artifactId>brenden-cloud-common-doc</artifactId>
         </dependency>

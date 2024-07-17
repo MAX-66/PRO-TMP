@@ -1,12 +1,11 @@
-package com.brenden.cloud.redis.config;
+package com.brenden.cloud.config;
 
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.data.redis.RedisReactiveAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.core.ReactiveHashOperations;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
@@ -23,7 +22,7 @@ import reactor.core.publisher.Flux;
  * @author lxq
  * @since 2023/12/16
  */
-@AutoConfiguration(before = RedisReactiveAutoConfiguration.class)
+@Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnClass({Flux.class, ReactiveRedisTemplate.class, ReactiveRedisConnectionFactory.class})
 public class ReactiveRedisAutoConfiguration {
