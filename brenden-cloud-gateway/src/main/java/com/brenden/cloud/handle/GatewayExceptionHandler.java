@@ -1,7 +1,7 @@
 package com.brenden.cloud.handle;
 
-import com.brenden.cloud.entity.ResultEntity;
-import com.brenden.cloud.error.GlobalCodeEnum;
+import com.brenden.cloud.base.entity.ResultEntity;
+import com.brenden.cloud.base.error.GlobalCodeEnum;
 import com.brenden.cloud.utils.ReactiveResponseUtil;
 import io.micrometer.common.lang.NonNullApi;
 import lombok.extern.slf4j.Slf4j;

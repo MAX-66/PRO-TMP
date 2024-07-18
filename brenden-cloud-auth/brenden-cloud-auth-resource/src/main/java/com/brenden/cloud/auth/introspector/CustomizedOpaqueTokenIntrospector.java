@@ -3,7 +3,7 @@ package com.brenden.cloud.auth.introspector;
 import com.brenden.cloud.auth.model.SecurityUserDetails;
 import com.brenden.cloud.auth.repository.RedisOAuth2AuthorizationRepository;
 import com.brenden.cloud.auth.utils.SecurityJacksonUtils;
-import com.brenden.cloud.error.GlobalCodeEnum;
+import com.brenden.cloud.base.error.GlobalCodeEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;

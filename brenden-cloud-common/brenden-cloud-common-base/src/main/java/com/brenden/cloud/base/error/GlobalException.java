@@ -1,6 +1,5 @@
-package com.brenden.cloud.error;
+package com.brenden.cloud.base.error;
 
-import lombok.Data;
 import lombok.Getter;
 
 /**

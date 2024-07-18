@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>brenden-cloud-common-base</module>
         <module>brenden-cloud-common-core</module>
         <module>brenden-cloud-common-mybatis-plus</module>
         <module>brenden-cloud-common-redis</module>

@@ -1,8 +1,8 @@
 package com.brenden.cloud.auth.handler;
 
-import com.brenden.cloud.entity.ResultEntity;
-import com.brenden.cloud.error.GlobalCodeEnum;
-import com.brenden.cloud.utils.JacksonUtil;
+import com.brenden.cloud.base.entity.ResultEntity;
+import com.brenden.cloud.base.error.GlobalCodeEnum;
+import com.brenden.cloud.core.utils.JacksonUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,9 +1,6 @@
-package com.brenden.cloud.utils;
+package com.brenden.cloud.core.utils;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -11,14 +8,22 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.SneakyThrows;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.function.Function;
 
 /**
@@ -43,7 +48,19 @@ public class JacksonUtil {
         // 序列化: 排除值为 null 的对象
         MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
-        MAPPER.registerModule(new JavaTimeModule());
+
+        TimeZone timeZone = TimeZone.getTimeZone(ZoneId.systemDefault());
+        DateTimeFormatter dateTimeFormatter = DateUtil.DATE_TIME_FORMATTER;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DateUtil.DATE_TIME_PATTERN);
+        simpleDateFormat.setTimeZone(timeZone);
+        MAPPER.setDateFormat(simpleDateFormat);
+        MAPPER.setTimeZone(timeZone);
+        JavaTimeModule javaTimeModule = new JavaTimeModule();
+        javaTimeModule.addSerializer(Long.class, ToStringSerializer.instance);
+        javaTimeModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
+        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(dateTimeFormatter));
+        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(dateTimeFormatter));
+        MAPPER.registerModule(javaTimeModule);
     }
 
     public static ObjectMapper getObjectMapper() {

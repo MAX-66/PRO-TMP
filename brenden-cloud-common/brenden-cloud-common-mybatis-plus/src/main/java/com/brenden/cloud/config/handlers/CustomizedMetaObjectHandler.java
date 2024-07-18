@@ -1,7 +1,7 @@
 package com.brenden.cloud.config.handlers;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.brenden.cloud.constant.Constant;
+import com.brenden.cloud.base.constant.Constant;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 

@@ -3,7 +3,7 @@ package com.brenden.cloud.router;
 import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.alibaba.cloud.nacos.NacosConfigProperties;
 import com.alibaba.nacos.api.config.ConfigService;
-import com.brenden.cloud.utils.JacksonUtil;
+import com.brenden.cloud.core.utils.JacksonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.FilterDefinition;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;

@@ -1,7 +1,8 @@
 package com.brenden.cloud.filter;
 
-import com.brenden.cloud.error.GlobalCodeEnum;
-import com.brenden.cloud.error.GlobalException;
+import com.brenden.cloud.base.entity.ResultEntity;
+import com.brenden.cloud.base.error.GlobalCodeEnum;
+import com.brenden.cloud.utils.ReactiveResponseUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHeaders;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -39,13 +40,11 @@ public class AuthGatewayFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         String authorizationValue = getParamValue(request, HttpHeaders.AUTHORIZATION);
         if (StringUtils.isNotBlank(authorizationValue)) {
-//            request.getHeaders().add(HttpHeaders.AUTHORIZATION, authorizationValue);
-//            return chain.filter(exchange.mutate().request(request).build());
             return chain
                     .filter(exchange.mutate().request(request.mutate().header(HttpHeaders.AUTHORIZATION, authorizationValue).build()).build());
         }
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-        throw new GlobalException(GlobalCodeEnum.GC_800004);
+        return ReactiveResponseUtil.response(exchange,  ResultEntity.fail(GlobalCodeEnum.GC_800004));
     }
 
     @Override

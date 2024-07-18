@@ -1,7 +1,7 @@
 package com.brenden.cloud.auth.authentication;
 
 import com.brenden.cloud.auth.constants.OauthConstants;
-import com.brenden.cloud.error.GlobalCodeEnum;
+import com.brenden.cloud.base.error.GlobalCodeEnum;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

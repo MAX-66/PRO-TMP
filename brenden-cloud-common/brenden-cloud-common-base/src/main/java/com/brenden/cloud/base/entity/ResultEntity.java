@@ -1,6 +1,6 @@
-package com.brenden.cloud.entity;
+package com.brenden.cloud.base.entity;
 
-import com.brenden.cloud.error.GlobalCodeEnum;
+import com.brenden.cloud.base.error.GlobalCodeEnum;
 import lombok.Data;
 
 import java.io.Serial;

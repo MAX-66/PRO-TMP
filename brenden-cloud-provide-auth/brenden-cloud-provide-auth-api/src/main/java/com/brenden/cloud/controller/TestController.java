@@ -1,7 +1,7 @@
 package com.brenden.cloud.controller;
 
-import com.brenden.cloud.error.GlobalCodeEnum;
-import com.brenden.cloud.error.GlobalException;
+import com.brenden.cloud.base.error.GlobalCodeEnum;
+import com.brenden.cloud.base.error.GlobalException;
 import com.brenden.cloud.redis.utils.RedisUtil;
 import com.brenden.cloud.redis.utils.RedissonUtil;
 import io.swagger.v3.oas.annotations.Operation;

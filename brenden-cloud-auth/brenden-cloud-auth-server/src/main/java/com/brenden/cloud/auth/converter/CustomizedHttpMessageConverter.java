@@ -1,6 +1,6 @@
 package com.brenden.cloud.auth.converter;
 
-import com.brenden.cloud.entity.ResultEntity;
+import com.brenden.cloud.base.entity.ResultEntity;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpInputMessage;

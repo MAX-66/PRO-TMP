@@ -1,4 +1,4 @@
-package com.brenden.cloud.constant;
+package com.brenden.cloud.base.constant;
 
 /**
  * <p>
