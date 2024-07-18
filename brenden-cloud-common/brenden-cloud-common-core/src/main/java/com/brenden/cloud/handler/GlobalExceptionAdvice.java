@@ -1,9 +1,12 @@
 package com.brenden.cloud.handler;
 
 import com.brenden.cloud.entity.ResultEntity;
+import com.brenden.cloud.error.GlobalCodeEnum;
 import com.brenden.cloud.error.GlobalException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
@@ -16,7 +19,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @Slf4j
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionAdvice {
 
     @ExceptionHandler(GlobalException.class)
     public ResultEntity<?> handler(GlobalException exception) {
@@ -24,11 +27,11 @@ public class GlobalExceptionHandler {
         return ResultEntity.fail(exception.getErrorCode(), exception.getErrorMsg());
     }
 
-
-    @ExceptionHandler(Exception.class)
-    public ResultEntity<?> handler(Exception exception) {
-        log.error("system exception, error msg: {}", exception.getMessage());
-        return ResultEntity.fail("500", exception.getMessage());
+    @ExceptionHandler(value = {RuntimeException.class, Exception.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResultEntity<?> handle(RuntimeException ex) {
+        log.error("runtime exception, error msg: {}", ex.getMessage());
+        return ResultEntity.fail(GlobalCodeEnum.GC_800006);
     }
 
 }

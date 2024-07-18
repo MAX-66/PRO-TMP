@@ -45,9 +45,6 @@ public class ResultEntity<T> implements Serializable {
     }
 
     public static <T> ResultEntity<T> fail(GlobalCodeEnum codeEnum) {
-        ResultEntity<T> result = new ResultEntity<>();
-        result.setResultCode(codeEnum.getCode());
-        result.setResultMsg(codeEnum.getMsg());
-        return result;
+        return fail(codeEnum.getCode(), codeEnum.getMsg());
     }
 }
