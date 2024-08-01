@@ -3,3 +3,8 @@ spring:
     name: @pom.artifactId@
   main:
     allow-bean-definition-overriding: true
+
+  security:
+    user:
+      name: admin
+      password: 123456

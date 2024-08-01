@@ -23,6 +23,7 @@ springdoc:
     version: v1.0.0
   default-flat-param-object: true
 
+
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*Mapper.xml
   typeAliasesPackage: com.brenden.cloud.**.persistence.domain

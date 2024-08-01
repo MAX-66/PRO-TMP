@@ -1,4 +1,4 @@
-package com.brenden.cloud.knife4j.config;
+package com.brenden.cloud.doc.config;
 
 import lombok.Getter;
 import lombok.Setter;
