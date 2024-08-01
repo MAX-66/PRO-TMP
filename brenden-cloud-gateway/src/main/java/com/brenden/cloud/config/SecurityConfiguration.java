@@ -32,9 +32,4 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-    @Bean
-    public ReactiveUserDetailsService userDetailsService() {
-        UserDetails admin = User.withUsername("admin").password("123456").build();
-        return new MapReactiveUserDetailsService(admin);
-    }
 }

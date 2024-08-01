@@ -42,7 +42,7 @@ public class Knife4jAutoConfig {
 
 
     @Bean
-    @ConditionalOnProperty(prefix = "springdoc.basic.enable", value = "true", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "springdoc.basic.enable", value = "true")
     public JakartaBasicFilter jakartaBasicFilter(DocBasicProperties properties) {
         JakartaBasicFilter jakartaBasicFilter = new JakartaBasicFilter();
         jakartaBasicFilter.setEnable(properties.isEnable());
