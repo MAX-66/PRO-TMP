@@ -21,6 +21,21 @@
             <groupId>com.brenden.cloud.auth</groupId>
             <artifactId>brenden-cloud-auth-token</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.brenden.cloud.common</groupId>
+            <artifactId>brenden-cloud-common-core</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

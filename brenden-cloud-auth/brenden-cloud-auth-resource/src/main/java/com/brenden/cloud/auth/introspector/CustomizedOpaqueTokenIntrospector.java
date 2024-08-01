@@ -4,12 +4,15 @@ import com.brenden.cloud.auth.model.SecurityUserDetails;
 import com.brenden.cloud.auth.repository.RedisOAuth2AuthorizationRepository;
 import com.brenden.cloud.auth.utils.SecurityJacksonUtils;
 import com.brenden.cloud.base.error.GlobalCodeEnum;
+import io.micrometer.common.lang.NonNullApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.introspection.BadOpaqueTokenException;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.security.Principal;
 import java.time.Instant;
@@ -26,10 +29,14 @@ import java.util.Objects;
  * @since 2024/6/6
  */
 @Component
+@NonNullApi
 @RequiredArgsConstructor
-public class CustomizedOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
+public class CustomizedOpaqueTokenIntrospector implements OpaqueTokenIntrospector, WebMvcConfigurer {
 
     private final RedisOAuth2AuthorizationRepository oAuth2AuthorizationRepository;
+
+    private final UserContextInterceptor userContextInterceptor;
+
 
     @Override
     public OAuth2AuthenticatedPrincipal introspect(String token) {
@@ -45,4 +52,11 @@ public class CustomizedOpaqueTokenIntrospector implements OpaqueTokenIntrospecto
             throw new BadOpaqueTokenException(GlobalCodeEnum.GC_800004.getMsg());
         }).orElseThrow(() -> new BadOpaqueTokenException(GlobalCodeEnum.GC_800004.getMsg()));
     }
+
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(userContextInterceptor);
+    }
+
 }

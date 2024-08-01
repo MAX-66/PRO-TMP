@@ -21,6 +21,7 @@ springdoc:
     contact-name: brenden.luo
     contact-email: brenden.luo@gmail.com
     version: v1.0.0
+  default-flat-param-object: true
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*Mapper.xml

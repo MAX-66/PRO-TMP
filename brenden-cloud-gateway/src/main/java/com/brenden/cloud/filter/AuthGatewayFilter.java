@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -28,7 +29,7 @@ import static com.brenden.cloud.constant.GatewayConstant.STATIC_ANT_MATCHERS;
 @Component
 public class AuthGatewayFilter implements GlobalFilter, Ordered {
 
-    private static final AntPathMatcher pathMatcher = new AntPathMatcher();
+    private static final PathMatcher pathMatcher = new AntPathMatcher();
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -63,6 +64,11 @@ public class AuthGatewayFilter implements GlobalFilter, Ordered {
         return false;
     }
 
+    public static void main(String[] args) {
+        // 测试示例
+        String testUri1 = "/v3/api-docs";
+        System.out.println(pathMatcher.match("/**/v3/api-docs", testUri1));
+    }
 
     private static String getParamValue(ServerHttpRequest request, String paramName) {
         String paramValue = request.getHeaders().getFirst(paramName);

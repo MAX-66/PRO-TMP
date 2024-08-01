@@ -10,7 +10,7 @@ package com.brenden.cloud.constant;
  */
 public class GatewayConstant {
 
-    public static String[] STATIC_ANT_MATCHERS = new String[] { "/error", "/auth/oauth2/*", "/swagger-ui.html", "/swagger-resources/**",
+    public static String[] STATIC_ANT_MATCHERS = new String[] { "/error", "/auth/oauth2/*", "/swagger-ui.html", "/swagger-resources/**", "/**/v3/api-docs",
             "/v3/**", "/webjars/**", "*.js", "*.css", "/favicon.ico", "/doc.html", "/v3/api-docs/*"};
 
 

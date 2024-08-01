@@ -20,8 +20,6 @@ public class CustomizedMetaObjectHandler implements MetaObjectHandler {
 
     public static final String DEL_FLAG = "isDelete";
 
-    public static final String VERSION = "version";
-
     public static final String CREATE_BY = "createBy";
 
     public static final String UPDATE_BY = "updateBy";
@@ -32,11 +30,10 @@ public class CustomizedMetaObjectHandler implements MetaObjectHandler {
         this.strictInsertFill(metaObject, GMT_CREATE, LocalDateTime.class, LocalDateTime.now());
         this.strictUpdateFill(metaObject, GMT_MODIFIED, LocalDateTime.class, LocalDateTime.now());
         this.strictInsertFill(metaObject, DEL_FLAG, () -> Constant.DEFAULT, Integer.class);
-        this.strictInsertFill(metaObject, VERSION, () -> Constant.DEFAULT, Integer.class);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        this.strictUpdateFill(metaObject, "gmtModified", LocalDateTime.class, LocalDateTime.now());
+        this.strictUpdateFill(metaObject, GMT_MODIFIED, LocalDateTime.class, LocalDateTime.now());
     }
 }

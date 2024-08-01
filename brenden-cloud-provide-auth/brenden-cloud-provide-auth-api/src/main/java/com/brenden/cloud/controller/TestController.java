@@ -1,7 +1,8 @@
 package com.brenden.cloud.controller;
 
-import com.brenden.cloud.base.error.GlobalCodeEnum;
-import com.brenden.cloud.base.error.GlobalException;
+import com.brenden.cloud.base.entity.BaseEntity;
+import com.brenden.cloud.base.entity.ResultEntity;
+import com.brenden.cloud.core.annotation.ApiProcess;
 import com.brenden.cloud.redis.utils.RedisUtil;
 import com.brenden.cloud.redis.utils.RedissonUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +31,6 @@ public class TestController {
 
     private final RedisUtil redisUtil;
 
-
     @Operation(summary = "写入redis")
     @PostMapping("/set")
     public void set() {
@@ -46,10 +46,10 @@ public class TestController {
 
     @Operation(summary = "读取")
     @GetMapping("/get2")
-    public Object get2() {
-        throw new GlobalException(GlobalCodeEnum.GC_0);
+    @ApiProcess
+    public ResultEntity<BaseEntity> get2(BaseEntity entity) {
+        return ResultEntity.success(entity);
     }
-
 
     @Operation(summary = "获取用户")
     @GetMapping("/getUser/{id}")

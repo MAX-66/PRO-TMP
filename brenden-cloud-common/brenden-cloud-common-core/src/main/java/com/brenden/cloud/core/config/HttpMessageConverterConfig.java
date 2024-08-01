@@ -25,7 +25,7 @@ public class HttpMessageConverterConfig {
     public MappingJackson2HttpMessageConverter jackson2HttpMessageConverter() {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setObjectMapper(JacksonUtil.getObjectMapper());
-        log.info("jackson配置加载完毕");
+        log.info("jackson init end");
         return converter;
     }
 }

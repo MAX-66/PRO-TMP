@@ -26,7 +26,7 @@ public final class OauthConstants {
     /** oauth2 授权信息 redis 索引后缀 */
     public static final String OAUTH2_AUTHORIZATION_ID_SUFFIX = ":idx";
 
-    public static String[] STATIC_ANT_MATCHERS = new String[] { "/error", "/auth/oauth2/*", "/swagger-ui.html", "/swagger-resources/**",
+    public static String[] STATIC_ANT_MATCHERS = new String[] { "/error", "/login", "/auth/oauth2/*", "/swagger-ui.html", "/swagger-resources/**",
             "/v3/**", "/webjars/**", "*.js", "*.css", "/favicon.ico", "/doc.html", "/v3/api-docs/*"};
 
 }

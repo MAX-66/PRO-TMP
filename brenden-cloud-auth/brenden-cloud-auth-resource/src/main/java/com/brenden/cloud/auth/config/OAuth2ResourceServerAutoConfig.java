@@ -1,5 +1,6 @@
 package com.brenden.cloud.auth.config;
 
+import com.brenden.cloud.auth.introspector.UserContextInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -51,6 +52,12 @@ public class OAuth2ResourceServerAutoConfig {
                 .securityContext(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
+    }
+
+
+    @Bean
+    public UserContextInterceptor userContextInterceptor() {
+        return new UserContextInterceptor();
     }
 
 }
