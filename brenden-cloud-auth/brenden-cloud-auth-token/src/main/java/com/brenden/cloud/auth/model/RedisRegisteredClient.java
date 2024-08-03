@@ -2,6 +2,7 @@ package com.brenden.cloud.auth.model;
 
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -16,6 +17,8 @@ import java.time.Instant;
 @Data
 public class RedisRegisteredClient implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 7334929548548691445L;
     /**
      * 主键
      */

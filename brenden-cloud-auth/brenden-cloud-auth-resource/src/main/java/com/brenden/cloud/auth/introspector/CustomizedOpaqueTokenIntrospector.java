@@ -4,6 +4,7 @@ import com.brenden.cloud.auth.model.SecurityUserDetails;
 import com.brenden.cloud.auth.repository.RedisOAuth2AuthorizationRepository;
 import com.brenden.cloud.auth.utils.SecurityJacksonUtils;
 import com.brenden.cloud.base.error.GlobalCodeEnum;
+import com.brenden.cloud.core.utils.SignUtil;
 import io.micrometer.common.lang.NonNullApi;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.MapUtils;
@@ -49,7 +50,7 @@ public class CustomizedOpaqueTokenIntrospector implements OpaqueTokenIntrospecto
                 Map<String, Object> map = SecurityJacksonUtils.toMap(attributes);
                 UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) map.get(Principal.class.getName());
                 SecurityUserDetails principal = (SecurityUserDetails) Objects.requireNonNull(authenticationToken).getPrincipal();
-                principal.setKey(MapUtils.getString(map,"key"));
+                principal.setKey(MapUtils.getString(map, SignUtil.KEY_NAME));
                 return principal;
             }
             throw new BadOpaqueTokenException(GlobalCodeEnum.GC_800004.getMsg());

@@ -5,6 +5,7 @@ import com.brenden.cloud.base.constant.SpecialCharacters;
 import com.brenden.cloud.base.error.GlobalCodeEnum;
 import com.brenden.cloud.base.error.GlobalException;
 import com.brenden.cloud.core.utils.EncryptionUtil;
+import com.brenden.cloud.core.utils.SignUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -114,7 +115,7 @@ public class PasswordAuthenticationProvider extends DaoAuthenticationProvider {
                 .principalName(authentication.getName())
                 .authorizedScopes(registeredClient.getScopes())
                 .attribute(Principal.class.getName(), usernamePasswordAuthenticationToken)
-                .attribute("key", key)
+                .attribute(SignUtil.KEY_NAME, key)
                 .authorizationGrantType(grantType);
         if (generatedAccessToken instanceof ClaimAccessor claimAccessor) {
             authorizationBuilder.token(accessToken, (metadata) ->
@@ -162,7 +163,7 @@ public class PasswordAuthenticationProvider extends DaoAuthenticationProvider {
         this.authorizationService.save(authorization);
 
         Map<String, Object> additionalParameters = new HashMap<>();
-        additionalParameters.put("key", key);
+        additionalParameters.put(SignUtil.KEY_NAME, key);
         if (idToken != null) {
             additionalParameters.put(OidcParameterNames.ID_TOKEN, idToken.getTokenValue());
         }

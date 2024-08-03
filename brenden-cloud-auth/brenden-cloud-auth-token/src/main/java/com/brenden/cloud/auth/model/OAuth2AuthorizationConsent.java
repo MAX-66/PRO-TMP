@@ -2,6 +2,7 @@ package com.brenden.cloud.auth.model;
 
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -15,6 +16,8 @@ import java.io.Serializable;
 @Data
 public class OAuth2AuthorizationConsent implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = -9165737323885412606L;
     /**
      * 额外提供的主键
      */
