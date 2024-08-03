@@ -26,15 +26,17 @@ public class BaseEntity implements Serializable {
     @Schema(description = "用户id", requiredMode = Schema.RequiredMode.NOT_REQUIRED, hidden = true)
     private Long userId;
 
-    @Schema(description = "用户id", requiredMode = Schema.RequiredMode.NOT_REQUIRED, hidden = true)
+    @Schema(description = "用户名称", requiredMode = Schema.RequiredMode.NOT_REQUIRED, hidden = true)
     private String username;
 
-    @Schema(description = "用户id", requiredMode = Schema.RequiredMode.NOT_REQUIRED, hidden = true)
+    @Schema(description = "token", requiredMode = Schema.RequiredMode.NOT_REQUIRED, hidden = true)
     private String token;
 
     @Schema(description = "秒级时间戳", requiredMode = Schema.RequiredMode.REQUIRED)
     private Long timestamp;
 
+    @Schema(description = "签名", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String signature;
 
     public BaseEntity() {
 

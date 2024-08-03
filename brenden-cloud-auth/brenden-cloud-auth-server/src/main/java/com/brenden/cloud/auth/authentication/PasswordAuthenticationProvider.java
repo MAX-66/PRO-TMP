@@ -1,8 +1,10 @@
 package com.brenden.cloud.auth.authentication;
 
 import com.brenden.cloud.auth.constants.OauthConstants;
+import com.brenden.cloud.base.constant.SpecialCharacters;
 import com.brenden.cloud.base.error.GlobalCodeEnum;
 import com.brenden.cloud.base.error.GlobalException;
+import com.brenden.cloud.core.utils.EncryptionUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -41,6 +43,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.springframework.security.oauth2.server.authorization.OAuth2TokenType.ACCESS_TOKEN;
 import static org.springframework.security.oauth2.server.authorization.OAuth2TokenType.REFRESH_TOKEN;
@@ -81,7 +84,7 @@ public class PasswordAuthenticationProvider extends DaoAuthenticationProvider {
         // RegisteredClient
         RegisteredClient registeredClient = oAuth2ClientAuthenticationToken.getRegisteredClient();
         if (Objects.isNull(registeredClient)) {
-            throw new GlobalException("400", "");
+            throw new GlobalException(GlobalCodeEnum.GC_800003);
         }
         // Authentication
 
@@ -104,12 +107,14 @@ public class PasswordAuthenticationProvider extends DaoAuthenticationProvider {
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(user, user.getUsername(), user.getAuthorities());
+        String key = createKey();
         OAuth2Authorization.Builder authorizationBuilder = OAuth2Authorization.withRegisteredClient(registeredClient)
                 // 使用client id 与 登录名 md5算法作为id
                 .id(generateKey(registeredClient.getClientId(), user.getUsername()))
                 .principalName(authentication.getName())
                 .authorizedScopes(registeredClient.getScopes())
                 .attribute(Principal.class.getName(), usernamePasswordAuthenticationToken)
+                .attribute("key", key)
                 .authorizationGrantType(grantType);
         if (generatedAccessToken instanceof ClaimAccessor claimAccessor) {
             authorizationBuilder.token(accessToken, (metadata) ->
@@ -156,11 +161,12 @@ public class PasswordAuthenticationProvider extends DaoAuthenticationProvider {
 
         this.authorizationService.save(authorization);
 
-        Map<String, Object> additionalParameters = Collections.emptyMap();
+        Map<String, Object> additionalParameters = new HashMap<>();
+        additionalParameters.put("key", key);
         if (idToken != null) {
-            additionalParameters = new HashMap<>();
             additionalParameters.put(OidcParameterNames.ID_TOKEN, idToken.getTokenValue());
         }
+
 
         return new OAuth2AccessTokenAuthenticationToken(registeredClient, authentication, accessToken, refreshToken, additionalParameters);
     }
@@ -183,20 +189,17 @@ public class PasswordAuthenticationProvider extends DaoAuthenticationProvider {
     }
 
 
-    private String generateKey(String clientId, String userId) {
-        try {
-            Map<String, Object> values = new HashMap<>();
-            if (StringUtils.hasLength(userId)) {
-                values.put("username", userId);
-            }
+    private static String generateKey(String clientId, String userId) {
+        Map<String, Object> values = new HashMap<>();
+        values.put("user_id", userId);
+        values.put("client_id", clientId);
+        return EncryptionUtil.encryptMD5(values.toString());
+    }
 
-            values.put("client_id", clientId);
-            MessageDigest digest = MessageDigest.getInstance("MD5");
-            byte[] bytes = digest.digest(values.toString().getBytes(StandardCharsets.UTF_8));
-            return String.format("%032x", new BigInteger(1, bytes));
-        } catch (NoSuchAlgorithmException var4) {
-            throw new IllegalStateException("MD5 algorithm not available.  Fatal (should be in the JDK).", var4);
-        }
+
+    private static String createKey() {
+        UUID uuid = UUID.randomUUID();
+        return uuid.toString().replace(SpecialCharacters.MINUS_SIGN, "");
     }
 
 }

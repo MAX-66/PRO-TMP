@@ -6,6 +6,7 @@ import com.brenden.cloud.auth.utils.SecurityJacksonUtils;
 import com.brenden.cloud.base.error.GlobalCodeEnum;
 import io.micrometer.common.lang.NonNullApi;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.introspection.BadOpaqueTokenException;
@@ -47,7 +48,9 @@ public class CustomizedOpaqueTokenIntrospector implements OpaqueTokenIntrospecto
                 String attributes = redisOAuth2Authorization.getAttributes();
                 Map<String, Object> map = SecurityJacksonUtils.toMap(attributes);
                 UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) map.get(Principal.class.getName());
-                return (SecurityUserDetails) Objects.requireNonNull(authenticationToken).getPrincipal();
+                SecurityUserDetails principal = (SecurityUserDetails) Objects.requireNonNull(authenticationToken).getPrincipal();
+                principal.setKey(MapUtils.getString(map,"key"));
+                return principal;
             }
             throw new BadOpaqueTokenException(GlobalCodeEnum.GC_800004.getMsg());
         }).orElseThrow(() -> new BadOpaqueTokenException(GlobalCodeEnum.GC_800004.getMsg()));

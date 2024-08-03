@@ -13,5 +13,16 @@ public class Constant {
     /** 是 */
     public static final int YES = 1;
 
+    /** 环境：dev */
+    public static final String DEV_PROFILE = "dev";
+
+    /** 环境：test */
+    public static final String TEST_PROFILE = "test";
+
+    /** 环境：pre */
+    public static final String PRE_PROFILE = "pre";
+
+    /** 环境：prod */
+    public static final String PROD_PROFILE = "prod";
 
 }

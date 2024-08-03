@@ -2,6 +2,7 @@ package com.brenden.cloud.base.context;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
 import com.brenden.cloud.base.entity.BaseEntity;
+import com.brenden.cloud.base.entity.UserContextPayload;
 
 import java.util.Optional;
 
@@ -15,7 +16,7 @@ import java.util.Optional;
  */
 public class UserContextHolder {
 
-    public final static ThreadLocal<BaseEntity> USER_CONTEXT = new TransmittableThreadLocal<>();
+    public final static ThreadLocal<UserContextPayload> USER_CONTEXT = new TransmittableThreadLocal<>();
 
     /**
      * 清除上下文
@@ -28,8 +29,8 @@ public class UserContextHolder {
      * 获取上下文用户信息
      * @return 用户信息
      */
-    public static BaseEntity getContext() {
-        return Optional.ofNullable(USER_CONTEXT.get()).orElse(new BaseEntity());
+    public static UserContextPayload getContext() {
+        return Optional.ofNullable(USER_CONTEXT.get()).orElse(new UserContextPayload());
     }
 
 
@@ -37,7 +38,7 @@ public class UserContextHolder {
      * 设置上下文用户信息
      * @param context 用户信息
      */
-    public static void setContext(BaseEntity context) {
+    public static void setContext(UserContextPayload context) {
         USER_CONTEXT.set(context);
     }
 }

@@ -43,6 +43,8 @@ public class SecurityUserDetails implements UserDetails, OAuth2AuthenticatedPrin
 
     private Integer status;
 
+    private String key;
+
     private List<String> roles;
 
     @Override

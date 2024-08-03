@@ -28,7 +28,7 @@ public class SecurityConfiguration {
         http.authorizeExchange((authorize) -> authorize
                 .pathMatchers("/doc.html","/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**").authenticated()
                 .anyExchange().permitAll()
-        ).formLogin(withDefaults()).httpBasic(withDefaults()).csrf(withDefaults()).logout(withDefaults());
+        ).formLogin(withDefaults()).httpBasic(withDefaults()).csrf(ServerHttpSecurity.CsrfSpec::disable).logout(ServerHttpSecurity.LogoutSpec::disable);
         return http.build();
     }
 

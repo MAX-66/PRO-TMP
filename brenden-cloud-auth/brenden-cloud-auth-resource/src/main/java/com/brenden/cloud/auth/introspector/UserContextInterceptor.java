@@ -3,6 +3,7 @@ package com.brenden.cloud.auth.introspector;
 import com.brenden.cloud.auth.model.SecurityUserDetails;
 import com.brenden.cloud.base.context.UserContextHolder;
 import com.brenden.cloud.base.entity.BaseEntity;
+import com.brenden.cloud.base.entity.UserContextPayload;
 import io.micrometer.common.lang.NonNullApi;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -62,8 +63,8 @@ public class UserContextInterceptor implements HandlerInterceptor {
      * @param request 请求
      * @return User
      */
-    private static BaseEntity convert(SecurityUserDetails userDetails, HttpServletRequest request) {
-        return new BaseEntity(userDetails.getId(), userDetails.getUsername(), getParamValue(request));
+    private static UserContextPayload convert(SecurityUserDetails userDetails, HttpServletRequest request) {
+        return new UserContextPayload(userDetails.getId(), userDetails.getUsername(), userDetails.getKey(), getParamValue(request));
     }
 
 
