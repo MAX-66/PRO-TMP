@@ -2,10 +2,7 @@
 项目模版
 
 ### todo list
-- [ ] Spring Authorization Server 集成
-
-    - 自定义密码模式
-    - token 存储到 redis
+- [x] Spring Authorization Server 集成
 - [ ] Seata 集成
 - [ ] Feign 集成
 - [ ] Gateway 网关请求拦截
@@ -15,7 +12,7 @@
 - [ ] MQ 消息中间件
 - [ ] Elasticsearch
 - [ ] 多数据源设计
-- [ ] 接口鉴权
+- [x] 接口鉴权
 - [ ] 接口日志记录
 - [ ] docker 部署
 - [ ] TDD
