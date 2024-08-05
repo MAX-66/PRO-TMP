@@ -27,8 +27,7 @@ public class FeignConfig {
     @Bean
     public RequestInterceptor requestInterceptor() {
         return requestTemplate -> {
-            String token = getToken(requestTemplate);
-            requestTemplate.header(HttpHeaders.AUTHORIZATION, String.format("%s %s", Constant.BEARER_TOKEN, token));
+            requestTemplate.header(HttpHeaders.AUTHORIZATION, String.format("%s %s", Constant.BEARER_TOKEN, getToken(requestTemplate)));
             requestTemplate.header(Constant.REQUEST_FEIGN_HEADER, "true");
         };
     }
