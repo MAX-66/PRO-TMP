@@ -4,7 +4,7 @@
 ### todo list
 - [x] Spring Authorization Server 集成
 - [ ] Seata 集成
-- [ ] Feign 集成
+- [x] Feign 集成
 - [ ] Gateway 网关请求拦截
 - [ ] 链路追踪
 - [ ] Spring 服务状态监控
