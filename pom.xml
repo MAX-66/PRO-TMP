@@ -163,6 +163,19 @@
                 <artifactId>brenden-cloud-common-base</artifactId>
                 <version>${brenden.cloud.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.brenden.cloud.common</groupId>
+                <artifactId>brenden-cloud-common-openfeign</artifactId>
+                <version>${brenden.cloud.version}</version>
+            </dependency>
+
+            <!-- Feign Client-->
+            <dependency>
+                <groupId>com.brenden.cloud.provide</groupId>
+                <artifactId>brenden-cloud-provide-auth-feign</artifactId>
+                <version>${brenden.cloud.version}</version>
+            </dependency>
+
 
             <!-- apache model-->
             <dependency>

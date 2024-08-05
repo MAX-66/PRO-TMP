@@ -17,6 +17,7 @@
         <module>brenden-cloud-provide-auth-persistence</module>
         <module>brenden-cloud-provide-auth-public</module>
         <module>brenden-cloud-provide-auth-service</module>
+        <module>brenden-cloud-provide-auth-feign</module>
     </modules>
 
     <dependencyManagement>

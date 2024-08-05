@@ -25,4 +25,9 @@ public class Constant {
     /** 环境：prod */
     public static final String PROD_PROFILE = "prod";
 
+    /** token 类型*/
+    public static final String BEARER_TOKEN = "Bearer";
+
+    /** feign 请求头标记*/
+    public static final String REQUEST_FEIGN_HEADER = "X-Internal-Call";
 }

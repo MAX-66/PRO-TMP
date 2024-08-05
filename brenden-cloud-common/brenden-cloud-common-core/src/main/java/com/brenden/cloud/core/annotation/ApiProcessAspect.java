@@ -1,5 +1,6 @@
 package com.brenden.cloud.core.annotation;
 
+import com.brenden.cloud.base.constant.Constant;
 import com.brenden.cloud.base.context.UserContextHolder;
 import com.brenden.cloud.base.entity.BaseEntity;
 import com.brenden.cloud.base.entity.UserContextPayload;
@@ -7,6 +8,7 @@ import com.brenden.cloud.base.error.GlobalCodeEnum;
 import com.brenden.cloud.base.error.GlobalException;
 import com.brenden.cloud.core.properties.DebugProperties;
 import com.brenden.cloud.core.utils.JacksonUtil;
+import com.brenden.cloud.core.utils.RequestUtil;
 import com.brenden.cloud.core.utils.SignUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -47,8 +49,9 @@ public class ApiProcessAspect {
         Map<String, Object> params = getParams(args);
         UserContextPayload context = UserContextHolder.getContext();
         // 签名校验
-        // todo feign 不需要校验
-        if (apiRequest.checkSign()) {
+        HttpServletRequest request = RequestUtil.getHttpServletRequest();
+        String feignHeader = request.getHeader(Constant.REQUEST_FEIGN_HEADER);
+        if (apiRequest.checkSign() && StringUtils.isBlank(feignHeader)) {
             checkSign(params, context.getKey());
         }
 

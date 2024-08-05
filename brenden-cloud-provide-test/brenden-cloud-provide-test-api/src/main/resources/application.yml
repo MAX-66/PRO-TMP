@@ -1,0 +1,41 @@
+server:
+  port: ${SERVER_PORT:8020}
+  tomcat:
+    uri-encoding: UTF-8
+    threads:
+      max: 800
+      min-spare: 100
+
+
+# springdoc-openapi项目配置
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'api-test'
+      paths-to-match: '/**'
+      packages-to-scan: com.brenden.cloud
+  info:
+    title: 测试模块
+    description: 测试
+    contact-name: brenden.luo
+    contact-email: brenden.luo@gmail.com
+    version: v1.0.0
+  default-flat-param-object: true
+
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+  typeAliasesPackage: com.brenden.cloud.**.persistence.domain
+  global-config:
+    db-config:
+      #驼峰下划线转换
+      column-underline: true
+      #逻辑删除配置
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      db-type: mysql
+    refresh: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false

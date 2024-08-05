@@ -8,16 +8,13 @@
         <version>1.0</version>
     </parent>
 
-    <groupId>com.brenden.cloud.common</groupId>
-    <artifactId>brenden-cloud-common</artifactId>
+    <groupId>com.brenden.cloud.provide</groupId>
+    <artifactId>brenden-cloud-provide-test</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>brenden-cloud-common-base</module>
-        <module>brenden-cloud-common-core</module>
-        <module>brenden-cloud-common-mybatis-plus</module>
-        <module>brenden-cloud-common-redis</module>
-        <module>brenden-cloud-common-doc</module>
-        <module>brenden-cloud-common-openfeign</module>
+        <module>brenden-cloud-provide-test-api</module>
+        <module>brenden-cloud-provide-test-service</module>
     </modules>
+
 </project>

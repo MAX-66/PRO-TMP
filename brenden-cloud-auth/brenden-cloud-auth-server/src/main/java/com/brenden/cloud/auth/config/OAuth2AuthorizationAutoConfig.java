@@ -68,7 +68,6 @@ import static org.springframework.data.redis.core.RedisKeyValueAdapter.EnableKey
  */
 @AutoConfiguration
 //@AutoConfiguration(before = { JdbcTemplateAutoConfiguration.class })
-@EnableRedisRepositories(enableKeyspaceEvents = OFF,  basePackages = { "com.brenden.cloud.auth.repository"})
 @ConditionalOnClass({ DataSource.class })
 @EnableWebSecurity
 public class OAuth2AuthorizationAutoConfig {

@@ -12,17 +12,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  *
  * </p>
  *
- * @author brenden
- * @since 2023/8/6
+ * @author lxq
+ * @since 2024/8/4
  */
 @SpringBootApplication
 @EnableConfigurationProperties
 @RequiredArgsConstructor
 @RestControllerAdvice
 @EnableFeignClients
-public class AuthApplication {
+public class TestApplication {
+
     public static void main(String[] args) {
-        SpringApplication.run(AuthApplication.class, args);
+        SpringApplication.run(TestApplication.class, args);
     }
 
 }

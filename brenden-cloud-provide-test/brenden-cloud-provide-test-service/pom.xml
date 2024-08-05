@@ -5,29 +5,20 @@
 
     <parent>
         <groupId>com.brenden.cloud.provide</groupId>
-        <artifactId>brenden-cloud-provide-auth</artifactId>
+        <artifactId>brenden-cloud-provide-test</artifactId>
         <version>1.0</version>
     </parent>
 
-    <artifactId>brenden-cloud-provide-auth-service</artifactId>
+    <artifactId>brenden-cloud-provide-test-service</artifactId>
     <packaging>jar</packaging>
 
     <name>brenden-cloud-provide-auth-service</name>
     <description>project for Spring Boot</description>
 
-
     <dependencies>
         <dependency>
             <groupId>com.brenden.cloud.common</groupId>
             <artifactId>brenden-cloud-common-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.brenden.cloud.auth</groupId>
-            <artifactId>brenden-cloud-auth-server</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.brenden.cloud.provide</groupId>
-            <artifactId>brenden-cloud-provide-auth-persistence</artifactId>
         </dependency>
         <dependency>
             <groupId>com.brenden.cloud.common</groupId>

@@ -1,8 +1,8 @@
 package com.brenden.cloud.auth.config;
 
 import com.brenden.cloud.auth.introspector.UserContextInterceptor;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -22,7 +22,7 @@ import static com.brenden.cloud.auth.constants.OauthConstants.STATIC_ANT_MATCHER
  * @author brenden
  * @since 2023/7/13
  */
-@Configuration
+@AutoConfiguration
 @EnableWebSecurity
 public class OAuth2ResourceServerAutoConfig {
 

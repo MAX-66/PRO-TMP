@@ -4,6 +4,7 @@ import com.brenden.cloud.auth.model.SecurityUserDetails;
 import com.brenden.cloud.base.context.UserContextHolder;
 import com.brenden.cloud.base.entity.BaseEntity;
 import com.brenden.cloud.base.entity.UserContextPayload;
+import com.brenden.cloud.core.utils.RequestUtil;
 import io.micrometer.common.lang.NonNullApi;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -64,26 +65,7 @@ public class UserContextInterceptor implements HandlerInterceptor {
      * @return User
      */
     private static UserContextPayload convert(SecurityUserDetails userDetails, HttpServletRequest request) {
-        return new UserContextPayload(userDetails.getId(), userDetails.getUsername(), userDetails.getKey(), getParamValue(request));
-    }
-
-
-    /**
-     * 获取token
-     * @param request 请求
-     * @return token
-     */
-    private static String getParamValue(HttpServletRequest request) {
-        String token = request.getHeader(AUTHORIZATION);
-        if (StringUtils.isBlank(token)) {
-            log.debug("Token not found in headers. Trying request parameters.");
-            token = request.getParameter(AUTHORIZATION);
-            if (StringUtils.isBlank(token)) {
-                log.debug("Token not found in request parameters.  Not an OAuth2 request.");
-                return token;
-            }
-        }
-        return token.substring(BEARER.getValue().length()).trim();
+        return new UserContextPayload(userDetails.getId(), userDetails.getUsername(), userDetails.getKey(), RequestUtil.getAuthorizationValue(request));
     }
 
 }
