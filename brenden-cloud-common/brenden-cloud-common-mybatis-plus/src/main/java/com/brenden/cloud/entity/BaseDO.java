@@ -46,8 +46,4 @@ public abstract class BaseDO implements Serializable {
     @TableLogic
     private Integer isDelete;
 
-    @Version
-    @TableField(fill = FieldFill.INSERT)
-    private Integer version;
-
 }
