@@ -2,6 +2,8 @@ package com.brenden.cloud.base;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Collection;
+
 /**
  * <p>
  *
@@ -11,4 +13,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2024/8/7
  */
 public interface BaseService<T> extends IService<T> {
+
+    Integer insertBatchSomeColumn(Collection<T> entityList, int batchSize);
+
+
 }
