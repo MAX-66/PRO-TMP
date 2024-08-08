@@ -52,7 +52,7 @@ public class ApiProcessAspect {
         HttpServletRequest request = RequestUtil.getHttpServletRequest();
         String feignHeader = request.getHeader(Constant.REQUEST_FEIGN_HEADER);
         if (apiRequest.checkSign() && StringUtils.isBlank(feignHeader)) {
-            checkSign(params, context.getKey());
+            checkSign(params, request, context.getKey());
         }
 
 
@@ -68,11 +68,17 @@ public class ApiProcessAspect {
     }
 
 
-    private void checkSign(Map<String, Object> params, String key) {
-        String signatureParam = MapUtils.getString(params, SignUtil.KEY_SIGN);
+    private void checkSign(Map<String, Object> params, HttpServletRequest request, String key) {
+        String signatureParam = request.getHeader(SignUtil.KEY_SIGN);
+        String timestamp = request.getHeader(SignUtil.KEY_TIMESTAMP);
         if (StringUtils.isBlank(signatureParam)) {
-            throw new GlobalException(GlobalCodeEnum.GC_800010);
+            throw new GlobalException(GlobalCodeEnum.GC_800011);
         }
+        if (StringUtils.isBlank(timestamp)) {
+            throw new GlobalException(GlobalCodeEnum.GC_800012);
+        }
+        params.put(SignUtil.KEY_SIGN, signatureParam);
+        params.put(SignUtil.KEY_TIMESTAMP, timestamp);
         String sign = SignUtil.sign(params, null);
         if (!sign.equals(signatureParam)) {
             StringBuilder msgSb = new StringBuilder(GlobalCodeEnum.GC_800010.getMsg());

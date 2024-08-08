@@ -20,6 +20,8 @@ public class SignUtil {
 
     public static final String KEY_SIGN = "signature";
 
+    public static final String KEY_TIMESTAMP = "timestamp";
+
     public static final String KEY_NAME = "key";
 
 
