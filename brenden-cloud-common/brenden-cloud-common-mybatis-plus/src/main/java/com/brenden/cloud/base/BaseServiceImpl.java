@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -47,5 +48,10 @@ public class BaseServiceImpl<M extends BaseDao<T>, T> extends ServiceImpl<M, T> 
             totalInserted += getBaseMapper().insertBatchSomeColumn(batchList);
         }
         return totalInserted;
+    }
+
+    @Override
+    public T getByCode(Serializable code) {
+        return getBaseMapper().findByCode(code);
     }
 }
