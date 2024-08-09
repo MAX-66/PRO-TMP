@@ -1,7 +1,6 @@
 package com.brenden.cloud.base.context;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
-import com.brenden.cloud.base.entity.BaseEntity;
 import com.brenden.cloud.base.entity.UserContextPayload;
 
 import java.util.Optional;
@@ -16,7 +15,7 @@ import java.util.Optional;
  */
 public class UserContextHolder {
 
-    public final static ThreadLocal<UserContextPayload> USER_CONTEXT = new TransmittableThreadLocal<>();
+    public static final ThreadLocal<UserContextPayload> USER_CONTEXT = new TransmittableThreadLocal<>();
 
     /**
      * 清除上下文
@@ -40,5 +39,30 @@ public class UserContextHolder {
      */
     public static void setContext(UserContextPayload context) {
         USER_CONTEXT.set(context);
+    }
+
+
+    /**
+     * 获取当前线程用户Id
+     * @return {@link Long}
+     */
+    public static Long getUserId() {
+        return getContext().getUserId();
+    }
+
+    /**
+     * 获取当前线程用户名称
+     * @return {@link String}
+     */
+    public static String getUsername() {
+        return getContext().getUsername();
+    }
+
+    /**
+     * 获取当前线程用户token
+     * @return {@link String}
+     */
+    public static String getToken() {
+        return getContext().getToken();
     }
 }
