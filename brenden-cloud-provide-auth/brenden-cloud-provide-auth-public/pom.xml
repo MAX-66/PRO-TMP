@@ -15,4 +15,10 @@
     <name>brenden-cloud-provide-auth-public</name>
     <description>project for Spring Boot</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.brenden.cloud.common</groupId>
+            <artifactId>brenden-cloud-common-base</artifactId>
+        </dependency>
+    </dependencies>
 </project>

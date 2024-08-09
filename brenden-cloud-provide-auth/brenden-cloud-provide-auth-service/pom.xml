@@ -37,5 +37,9 @@
             <groupId>com.brenden.cloud.provide</groupId>
             <artifactId>brenden-cloud-provide-auth-feign</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.brenden.cloud.provide</groupId>
+            <artifactId>brenden-cloud-provide-auth-public</artifactId>
+        </dependency>
     </dependencies>
 </project>

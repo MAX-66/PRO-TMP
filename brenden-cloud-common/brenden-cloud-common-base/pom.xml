@@ -19,7 +19,6 @@
         <dependency>
             <groupId>com.brenden.cloud.common</groupId>
             <artifactId>brenden-cloud-common-doc</artifactId>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
