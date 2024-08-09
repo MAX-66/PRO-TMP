@@ -38,7 +38,7 @@ public class BaseGenerator {
                 .logicDeleteColumnName("is_delete")
                 .versionColumnName("version");
 //        strategy.serviceBuilder().formatServiceFileName("%sManager").formatServiceImplFileName("%sManagerImpl");
-        strategy.serviceBuilder().formatServiceFileName("%sService").formatServiceImplFileName("%sServiceImpl");
+        strategy.serviceBuilder().formatServiceFileName("%sManager").formatServiceImplFileName("%sManagerImpl");
         strategy.controllerBuilder().formatFileName("%sController").enableRestStyle();
         strategy.mapperBuilder().superClass(BaseMapper.class)
                 .formatMapperFileName("%sMapper")
