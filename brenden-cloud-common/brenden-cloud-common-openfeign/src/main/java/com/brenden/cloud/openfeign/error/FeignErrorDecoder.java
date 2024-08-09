@@ -31,7 +31,7 @@ public class FeignErrorDecoder implements ErrorDecoder {
             ResultEntity<?> resultEntity = JacksonUtil.getObjectMapper().readValue(response.body().asInputStream(), ResultEntity.class);
             GlobalCodeEnum codeEnum = GlobalCodeEnum.getEnum(resultEntity.getResultCode());
             if (ObjectUtils.isEmpty(codeEnum)) {
-                throw new GlobalException(GlobalCodeEnum.GC_800011);
+                throw new GlobalException(GlobalCodeEnum.GC_800013);
             }
             throw new GlobalException(codeEnum);
         } catch (IOException e) {
