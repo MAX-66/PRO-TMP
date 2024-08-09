@@ -13,6 +13,8 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 </#if>
 
+import java.io.Serial;
+
 /**
  * <p>
  * ${table.comment!}
@@ -43,7 +45,7 @@ public class ${entity} extends Model<${entity}> {
 <#else>
 public class ${entity} implements Serializable {
 </#if>
-
+    @Serial
     private static final long serialVersionUID = 1L;
 <#-- ----------  BEGIN 字段循环遍历  ---------->
 <#list table.fields as field>
