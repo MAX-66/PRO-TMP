@@ -32,12 +32,6 @@ public class BaseEntity implements Serializable {
     @Schema(description = "token", requiredMode = Schema.RequiredMode.NOT_REQUIRED, hidden = true)
     private String token;
 
-    @Schema(description = "秒级时间戳", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Long timestamp;
-
-    @Schema(description = "签名", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String signature;
-
     public BaseEntity() {
 
     }
@@ -47,12 +41,5 @@ public class BaseEntity implements Serializable {
         this.userId = userId;
         this.username = username;
         this.token = token;
-    }
-
-    public BaseEntity(Long userId, String username, String token, Long timestamp) {
-        this.userId = userId;
-        this.username = username;
-        this.token = token;
-        this.timestamp = timestamp;
     }
 }
