@@ -1,13 +1,13 @@
-package com.brenden.cloud.user.impl;
+package com.brenden.cloud.auth;
 
 import com.brenden.cloud.auth.model.SecurityUserDetails;
+import com.brenden.cloud.auth.user.BaseUserDetailsService;
 import com.brenden.cloud.sys.persistence.domain.RoleDO;
 import com.brenden.cloud.sys.persistence.domain.UserDO;
 import com.brenden.cloud.sys.persistence.domain.UserRoleDO;
 import com.brenden.cloud.sys.persistence.manager.RoleManager;
 import com.brenden.cloud.sys.persistence.manager.UserManager;
 import com.brenden.cloud.sys.persistence.manager.UserRoleManager;
-import com.brenden.cloud.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements BaseUserDetailsService {
 
     private final UserManager userManager;
     private final UserRoleManager userRoleManager;
