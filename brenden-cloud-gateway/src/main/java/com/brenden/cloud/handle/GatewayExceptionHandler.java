@@ -1,5 +1,6 @@
 package com.brenden.cloud.handle;
 
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.brenden.cloud.base.entity.ResultEntity;
 import com.brenden.cloud.base.error.GlobalCodeEnum;
 import com.brenden.cloud.utils.ReactiveResponseUtil;
