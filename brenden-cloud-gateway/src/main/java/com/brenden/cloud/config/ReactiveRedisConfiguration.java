@@ -25,7 +25,7 @@ import reactor.core.publisher.Flux;
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnClass({Flux.class, ReactiveRedisTemplate.class, ReactiveRedisConnectionFactory.class})
-public class ReactiveRedisAutoConfiguration {
+public class ReactiveRedisConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(name = {"reactiveRedisTemplate"})
