@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brenden.cloud.test.persistence.mapper.TestTableMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.brenden.cloud.test.persistence.domain.TestTableDO">
+        <result column="id" property="id" />
+        <result column="create_by" property="createBy" />
+        <result column="update_by" property="updateBy" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="gmt_modified" property="gmtModified" />
+        <result column="is_delete" property="isDelete" />
+        <result column="field_a" property="fieldA" />
+        <result column="field_b" property="fieldB" />
+        <result column="field_c" property="fieldC" />
+        <result column="field_d" property="fieldD" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        create_by,
+        update_by,
+        gmt_create,
+        gmt_modified,
+        is_delete,
+        field_a, field_b, field_c, field_d
+    </sql>
+</mapper>
