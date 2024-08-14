@@ -46,6 +46,7 @@ public class LogicSqlInjector extends DefaultSqlInjector {
                 .add(new SelectMaps())
                 .add(new SelectObjs())
                 .add(new FindByCode())
+                .add(new SelectOne())
                 .add(new SelectList());
         if (tableInfo.havePK()) {
             builder.add(new DeleteById())
