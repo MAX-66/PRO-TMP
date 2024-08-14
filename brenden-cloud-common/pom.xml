@@ -19,5 +19,6 @@
         <module>brenden-cloud-common-redis</module>
         <module>brenden-cloud-common-doc</module>
         <module>brenden-cloud-common-openfeign</module>
+        <module>brenden-cloud-common-sentinel</module>
     </modules>
 </project>
