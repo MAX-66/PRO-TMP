@@ -4,6 +4,8 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
         namespace: public
+        username: nacos
+        password: nacos
       config:
         server-addr: 127.0.0.1:8848
         namespace: public
@@ -13,6 +15,8 @@ spring:
             refresh: true
           - data-id: brenden-shared-base-config.yaml
             refresh: true
+        username: nacos
+        password: nacos
 
 logging:
   config: classpath:logback-spring.xml
