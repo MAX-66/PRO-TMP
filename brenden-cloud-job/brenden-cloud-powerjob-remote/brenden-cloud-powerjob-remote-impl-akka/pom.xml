@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.brenden.cloud.job</groupId>
+        <artifactId>brenden-cloud-powerjob-remote</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>brenden-cloud-powerjob-remote-impl-akka</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.brenden.cloud.job</groupId>
+            <artifactId>brenden-cloud-powerjob-remote-framework</artifactId>
+        </dependency>
+
+        <!-- akka remote -->
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-remote_2.13</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-slf4j_2.13</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

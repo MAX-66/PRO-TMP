@@ -48,6 +48,8 @@
         <knife4j-version>4.5.0</knife4j-version>
         <transmittable.thread.local.version>2.14.2</transmittable.thread.local.version>
         <commons.collections4.version>4.4</commons.collections4.version>
+        <commons.io.version>2.16.1</commons.io.version>
+        <commons.net.version>3.11.1</commons.net.version>
         <guava.version>33.2.1-jre</guava.version>
     </properties>
 
@@ -178,6 +180,16 @@
                 <artifactId>commons-collections4</artifactId>
                 <version>${commons.collections4.version}</version>
             </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons.io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-net</groupId>
+                <artifactId>commons-net</artifactId>
+                <version>${commons.net.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -185,7 +197,12 @@
                 <version>${guava.version}</version>
             </dependency>
 
-
+            <!-- job -->
+            <dependency>
+                <groupId>com.brenden.cloud.job</groupId>
+                <artifactId>brenden-cloud-powerjob-worker-boot-starter</artifactId>
+                <version>${brenden.cloud.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

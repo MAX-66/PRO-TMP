@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.brenden.cloud</groupId>
+        <artifactId>brenden-cloud-master</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <groupId>com.brenden.cloud.job</groupId>
+    <artifactId>brenden-cloud-job</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>brenden-cloud-powerjob-server-auth</module>
+        <module>brenden-cloud-powerjob-server-common</module>
+        <module>brenden-cloud-powerjob-server-core</module>
+        <module>brenden-cloud-powerjob-server-extension</module>
+        <module>brenden-cloud-powerjob-server-migrate</module>
+        <module>brenden-cloud-powerjob-server-monitor</module>
+        <module>brenden-cloud-powerjob-server-persistence</module>
+        <module>brenden-cloud-powerjob-server-remote</module>
+        <module>brenden-cloud-powerjob-server-start</module>
+        <module>brenden-cloud-powerjob-client</module>
+        <module>brenden-cloud-powerjob-common</module>
+        <module>brenden-cloud-powerjob-remote</module>
+        <module>brenden-cloud-powerjob-worker</module>
+        <module>brenden-cloud-powerjob-worker-boot-starter</module>
+    </modules>
+
+    <properties>
+        <powerjob.version>5.1.0</powerjob.version>
+        <powerjob-common.version>5.1.0</powerjob-common.version>
+        <powerjob-remote-impl-http.version>5.1.0</powerjob-remote-impl-http.version>
+        <powerjob-remote-impl-akka.version>5.1.0</powerjob-remote-impl-akka.version>
+        <fastjson.version>1.2.83</fastjson.version>
+        <dingding.version>1.0.1</dingding.version>
+        <mvn.invoker.version>3.0.1</mvn.invoker.version>
+        <fastjson.version>1.2.83</fastjson.version>
+        <dingding.version>1.0.1</dingding.version>
+        <cron-utils.version>9.2.1</cron-utils.version>
+        <springdoc-openapi-ui.version>1.6.14</springdoc-openapi-ui.version>
+        <zip4j.version>2.11.5</zip4j.version>
+        <kryo.version>5.3.0</kryo.version>
+        <aliyun-sdk-oss.version>3.17.1</aliyun-sdk-oss.version>
+        <aws-java-sdk-s3.version>1.12.665</aws-java-sdk-s3.version>
+        <reflections.version>0.10.2</reflections.version>
+        <vertx.version>4.5.8</vertx.version>
+        <akka.version>2.6.13</akka.version>
+        <gatling.version>3.9.0</gatling.version>
+        <maven.invoker.version>3.3.0</maven.invoker.version>
+    </properties>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.brenden.cloud.job</groupId>
+                <artifactId>brenden-cloud-powerjob-server-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.brenden.cloud.job</groupId>
+                <artifactId>brenden-cloud-powerjob-server-monitor</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.brenden.cloud.job</groupId>
+                <artifactId>brenden-cloud-powerjob-server-extension</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.brenden.cloud.job</groupId>
+                <artifactId>brenden-cloud-powerjob-server-remote</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.brenden.cloud.job</groupId>
+                <artifactId>brenden-cloud-powerjob-server-persistence</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.brenden.cloud.job</groupId>
+                <artifactId>brenden-cloud-powerjob-server-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.brenden.cloud.job</groupId>
+                <artifactId>brenden-cloud-powerjob-server-migrate</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.brenden.cloud.job</groupId>
+                <artifactId>brenden-cloud-powerjob-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.brenden.cloud.job</groupId>
+                <artifactId>brenden-cloud-powerjob-server-auth</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.brenden.cloud.job</groupId>
+                <artifactId>brenden-cloud-powerjob-remote-framework</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.brenden.cloud.job</groupId>
+                <artifactId>brenden-cloud-powerjob-remote-impl-akka</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.brenden.cloud.job</groupId>
+                <artifactId>brenden-cloud-powerjob-remote-impl-http</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.brenden.cloud.job</groupId>
+                <artifactId>brenden-cloud-powerjob-worker</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- fastJson -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <!-- oms-common -->
+            <dependency>
+                <groupId>com.brenden.cloud.job</groupId>
+                <artifactId>brenden-cloud-powerjob-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.esotericsoftware</groupId>
+                <artifactId>kryo</artifactId>
+                <version>${kryo.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>alibaba-dingtalk-service-sdk</artifactId>
+                <version>${dingding.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+
+            <!-- 存储扩展-阿里云OSS，未使用可移除 -->
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${aliyun-sdk-oss.version}</version>
+            </dependency>
+            <!-- 存储扩展-Minio/S3，未使用可移除（minio-client 依赖 OKHTTP4.x 版本，强制引入 kotlin 标准库，为了防止引入更多问题放弃） -->
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk-s3</artifactId>
+                <version>${aws-java-sdk-s3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${reflections.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-core</artifactId>
+                <version>${vertx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-web</artifactId>
+                <version>${vertx.version}</version>
+            </dependency>
+
+            <!-- akka remote -->
+            <dependency>
+                <groupId>com.typesafe.akka</groupId>
+                <artifactId>akka-remote_2.13</artifactId>
+                <version>${akka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.typesafe.akka</groupId>
+                <artifactId>akka-slf4j_2.13</artifactId>
+                <version>${akka.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.gatling.highcharts</groupId>
+                <artifactId>gatling-charts-highcharts</artifactId>
+                <version>${gatling.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>net.lingala.zip4j</groupId>
+                <artifactId>zip4j</artifactId>
+                <version>${zip4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven.shared</groupId>
+                <artifactId>maven-invoker</artifactId>
+                <version>${maven.invoker.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.cronutils</groupId>
+                <artifactId>cron-utils</artifactId>
+                <version>${cron-utils.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+</project>

@@ -41,5 +41,9 @@
             <groupId>com.brenden.cloud.provide</groupId>
             <artifactId>brenden-cloud-provide-auth-public</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.brenden.cloud.job</groupId>
+            <artifactId>brenden-cloud-powerjob-worker-boot-starter</artifactId>
+        </dependency>
     </dependencies>
 </project>

@@ -22,3 +22,11 @@ logging:
   config: classpath:logback-spring.xml
   level:
     com.alibaba.nacos: warn
+
+powerjob:
+  worker:
+    protocol: http
+    server-address: 127.0.0.1:7700
+    app-name: ${spring.application.name}
+    store-strategy: disk
+    port: 27777
