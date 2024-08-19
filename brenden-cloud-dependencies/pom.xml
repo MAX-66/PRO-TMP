@@ -9,11 +9,11 @@
         <version>3.3.1</version>
     </parent>
     <groupId>com.brenden.cloud</groupId>
-    <artifactId>brenden-cloud-master</artifactId>
+    <artifactId>brenden-cloud-dependencies</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
 
-    <name>brenden-cloud</name>
+    <name>brenden-cloud-dependencies</name>
     <description>brenden project for Spring Cloud</description>
 
     <developers>
@@ -23,10 +23,10 @@
         </developer>
     </developers>
 
-    <modules>
-        <module>brenden-cloud-auth</module>
-        <module>brenden-cloud-common</module>
-    </modules>
+<!--    <modules>-->
+<!--        <module>brenden-cloud-auth</module>-->
+<!--        <module>brenden-cloud-common</module>-->
+<!--    </modules>-->
 
     <properties>
         <brenden.cloud.version>1.0</brenden.cloud.version>

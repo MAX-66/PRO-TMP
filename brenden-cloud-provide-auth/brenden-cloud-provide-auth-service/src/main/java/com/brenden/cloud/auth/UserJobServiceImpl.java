@@ -1,3 +1,4 @@
+/*
 package com.brenden.cloud.auth;
 
 import lombok.extern.slf4j.Slf4j;
@@ -5,6 +6,7 @@ import org.springframework.stereotype.Component;
 import tech.powerjob.worker.annotation.PowerJobHandler;
 import tech.powerjob.worker.core.processor.TaskContext;
 
+*/
 /**
  * <p>
  *
@@ -12,7 +14,8 @@ import tech.powerjob.worker.core.processor.TaskContext;
  *
  * @author lxq
  * @since 2024/8/19
- */
+ *//*
+
 
 @Component
 @Slf4j
@@ -28,3 +31,4 @@ public class UserJobServiceImpl {
     }
 
 }
+*/
