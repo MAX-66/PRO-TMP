@@ -23,11 +23,6 @@
         </developer>
     </developers>
 
-<!--    <modules>-->
-<!--        <module>brenden-cloud-auth</module>-->
-<!--        <module>brenden-cloud-common</module>-->
-<!--    </modules>-->
-
     <properties>
         <brenden.cloud.version>1.0</brenden.cloud.version>
         <java.version>17</java.version>
