@@ -5,7 +5,7 @@
 
     <parent>
         <groupId>com.brenden.cloud.job</groupId>
-        <artifactId>brenden-cloud-job</artifactId>
+        <artifactId>brenden-cloud-power-job</artifactId>
         <version>1.0</version>
     </parent>
 

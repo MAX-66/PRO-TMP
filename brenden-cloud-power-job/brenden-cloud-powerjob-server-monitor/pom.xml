@@ -5,22 +5,17 @@
 
     <parent>
         <groupId>com.brenden.cloud.job</groupId>
-        <artifactId>brenden-cloud-job</artifactId>
+        <artifactId>brenden-cloud-power-job</artifactId>
         <version>1.0</version>
     </parent>
 
-    <artifactId>brenden-cloud-powerjob-server-extension</artifactId>
+    <artifactId>brenden-cloud-powerjob-server-monitor</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.brenden.cloud.job</groupId>
-            <artifactId>brenden-cloud-powerjob-common</artifactId>
+            <artifactId>brenden-cloud-powerjob-server-common</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -9,7 +9,7 @@
     </parent>
 
     <groupId>com.brenden.cloud.job</groupId>
-    <artifactId>brenden-cloud-job</artifactId>
+    <artifactId>brenden-cloud-power-job</artifactId>
     <packaging>pom</packaging>
 
     <modules>
