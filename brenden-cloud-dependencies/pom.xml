@@ -191,13 +191,6 @@
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
-
-            <!-- job -->
-            <dependency>
-                <groupId>com.brenden.cloud.job</groupId>
-                <artifactId>brenden-cloud-powerjob-worker-boot-starter</artifactId>
-                <version>${brenden.cloud.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
