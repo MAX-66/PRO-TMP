@@ -4,26 +4,22 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.brenden.cloud.provide</groupId>
-        <artifactId>brenden-cloud-provide-auth</artifactId>
+        <groupId>com.brenden.cloud.common</groupId>
+        <artifactId>brenden-cloud-common</artifactId>
         <version>1.0</version>
     </parent>
 
-    <artifactId>brenden-cloud-provide-auth-persistence</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>brenden-cloud-common-mongodb</artifactId>
 
-    <name>brenden-cloud-provide-auth-persistence</name>
-    <description>project for Spring Boot</description>
 
     <dependencies>
         <dependency>
-            <groupId>com.brenden.cloud.common</groupId>
-            <artifactId>brenden-cloud-common-mybatis-plus</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
         <dependency>
             <groupId>com.brenden.cloud.common</groupId>
-            <artifactId>brenden-cloud-common-mongodb</artifactId>
+            <artifactId>brenden-cloud-common-base</artifactId>
         </dependency>
     </dependencies>
-
 </project>

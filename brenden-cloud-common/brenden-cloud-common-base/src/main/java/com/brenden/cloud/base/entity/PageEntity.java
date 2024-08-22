@@ -29,5 +29,5 @@ public class PageEntity extends BaseEntity{
     private String orderBy;
 
     @Schema(description = "排序方式：正序true；倒序false", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private Boolean sort;
+    private Boolean sort = true;
 }

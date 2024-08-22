@@ -17,6 +17,16 @@ spring:
             refresh: true
         username: nacos
         password: nacos
+  data:
+    mongodb:
+#      uri: mongodb://root:123456@localhost:27017/mongo
+      authentication-database: admin
+      host: 127.0.0.1
+      port: 27017
+      database: mongo
+      username: root
+      password: "123456"
+
 
 logging:
   config: classpath:logback-spring.xml

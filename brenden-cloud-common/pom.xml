@@ -15,10 +15,11 @@
     <modules>
         <module>brenden-cloud-common-base</module>
         <module>brenden-cloud-common-core</module>
-        <module>brenden-cloud-common-mybatis-plus</module>
-        <module>brenden-cloud-common-redis</module>
         <module>brenden-cloud-common-doc</module>
+        <module>brenden-cloud-common-mongodb</module>
+        <module>brenden-cloud-common-mybatis-plus</module>
         <module>brenden-cloud-common-openfeign</module>
+        <module>brenden-cloud-common-redis</module>
         <module>brenden-cloud-common-sentinel</module>
     </modules>
 </project>
