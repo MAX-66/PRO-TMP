@@ -165,6 +165,12 @@
                 <artifactId>brenden-cloud-common-mongodb</artifactId>
                 <version>${brenden.cloud.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.brenden.cloud.common</groupId>
+                <artifactId>brenden-cloud-common-queue</artifactId>
+                <version>${brenden.cloud.version}</version>
+            </dependency>
+
 
             <!-- Feign Client-->
             <dependency>

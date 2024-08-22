@@ -21,5 +21,6 @@
         <module>brenden-cloud-common-openfeign</module>
         <module>brenden-cloud-common-redis</module>
         <module>brenden-cloud-common-sentinel</module>
+        <module>brenden-cloud-common-queue</module>
     </modules>
 </project>
