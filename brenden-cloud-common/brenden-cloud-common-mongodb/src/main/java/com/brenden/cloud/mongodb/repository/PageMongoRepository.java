@@ -7,10 +7,11 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
+import java.io.Serializable;
 import java.util.List;
 
 @NoRepositoryBean
-public interface PageMongoRepository<T, ID> extends MongoRepository<T, ID> {
+public interface PageMongoRepository<T extends Serializable, ID> extends MongoRepository<T, ID> {
 
     /**
      * 分页查询

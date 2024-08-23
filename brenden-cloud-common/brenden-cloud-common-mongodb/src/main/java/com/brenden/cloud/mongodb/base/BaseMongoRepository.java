@@ -17,6 +17,7 @@ import org.springframework.data.mongodb.repository.support.SimpleMongoRepository
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ import java.util.List;
  * @author lxq
  * @since 2024/8/22
  */
-public class BaseMongoRepository<T, ID> extends SimpleMongoRepository<T, ID> implements PageMongoRepository<T, ID> {
+public class BaseMongoRepository<T extends Serializable, ID> extends SimpleMongoRepository<T, ID> implements PageMongoRepository<T, ID> {
 
     private final MongoEntityInformation<T, ID> entityInformation;
     private final MongoOperations mongoOperations;
