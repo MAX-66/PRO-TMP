@@ -1,6 +1,6 @@
 package com.brenden.cloud.base.constant;
 
-public class Constant {
+public final class Constant {
 
 
 

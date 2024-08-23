@@ -8,7 +8,7 @@ package com.brenden.cloud.base.constant;
  * @author lxq
  * @since 2024/7/10
  */
-public class SpecialCharacters {
+public final class SpecialCharacters {
 
     public static final String AT_SYMBOL = "@";
 
