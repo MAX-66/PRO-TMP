@@ -1,10 +1,11 @@
 package com.brenden.cloud.base;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import org.apache.ibatis.annotations.Param;
-
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
+
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
@@ -16,7 +17,18 @@ import java.util.Collection;
  */
 public interface BaseService<T> extends IService<T> {
 
-    Integer insertBatchSomeColumn(Collection<T> entityList, int batchSize);
+    int insertBatchSomeColumn(Collection<T> entityList);
+
+    int insertBatchSomeColumn(Collection<T> entityList, int batchSize);
 
     T getByCode(Serializable code);
+
+    boolean removeByCode(Serializable code);
+
+    T getByFunction(SFunction<T, Object> column, Object val);
+
+    List<T> listByFunction(SFunction<T, Object> column, Object... values);
+
+    List<T> listByFunction(SFunction<T, Object> column, Collection<?> coll);
+
 }

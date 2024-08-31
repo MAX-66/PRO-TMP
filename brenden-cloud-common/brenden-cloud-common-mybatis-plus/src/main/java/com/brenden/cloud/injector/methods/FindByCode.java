@@ -1,12 +1,12 @@
-package com.brenden.cloud.injector;
+package com.brenden.cloud.injector.methods;
+
+import java.io.Serial;
 
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
-
-import java.io.Serial;
 
 /**
  * <p>
@@ -22,7 +22,7 @@ public class FindByCode extends AbstractMethod {
     @Serial
     private static final long serialVersionUID = 4037675944528443641L;
 
-    protected FindByCode() {
+    public FindByCode() {
         super("findByCode");
     }
 
