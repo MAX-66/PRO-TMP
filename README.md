@@ -8,14 +8,14 @@
 - [x] 接口鉴权
 - [x] TDD
 - [x] Sentinel
-- [ ] Job Task
-- [ ] MQ 消息中间件
+- [x] Job Task
+- [x] MQ 消息中间件
 - [ ] Elasticsearch
-- [ ] 多数据源设计
-- [ ] 接口日志记录
-- [ ] docker 部署
+- [x] 多数据源设计
+- [x] 接口日志记录
+- [x] docker 部署
 - [ ] 链路追踪
-- [ ] Spring 服务状态监控
+- [x] Spring 服务状态监控
 - [ ] 多租户
 - [ ] Mybatis-plus 优化(持续优化)
 - [ ] Seata 集成
